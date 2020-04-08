@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29503.13
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WMS3.1", "WMS3.1\WMS3.1.csproj", "{DDF39AFC-E297-4126-834D-6F064353AC4A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DDF39AFC-E297-4126-834D-6F064353AC4A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDF39AFC-E297-4126-834D-6F064353AC4A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDF39AFC-E297-4126-834D-6F064353AC4A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDF39AFC-E297-4126-834D-6F064353AC4A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AE8D0610-E985-4C16-A7B6-43E48A8A0367}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,158 @@
+﻿<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("a[rel='pop-up']").click(function () {
+            var caracteristicas = "height=550,width=1000,scrollTo,resizable=1,scrollbars=1,location=0";
+            nueva = window.open(this.href, 'popup', caracteristicas);
+
+
+            return false;
+        });
+        //botoes
+        $("#finalizar").click(function () {
+
+            var i = 0;
+            var envio = "{Data:'" + $("#id_data").val() + "',ModoPago:'" + $("#modoPago").val() + "',IdCliente:'" + $("#codigoCliente").val() + "',IdCabecalho:'2',Total:'" + $('#TotalaPagar').val() + "',";
+            $("#detalhe tbody tr").each(function (index) {
+                if (i == 0) {
+                    envio += "ListaDetalhe:[{IdProduto:'" + $(this).find('td').eq(0).text() +
+                        "',Quantidade:'" + $(this).find('td').eq(2).text() +
+                        "',Desconto:'" + $(this).find('td').eq(4).text() +
+                        "',SubTotal:'" + $(this).find('td').eq(5).text() + "'}";
+                } else {
+                    envio += ",{IdProduto:'" + $(this).find('td').eq(0).text() +
+                        "',Quantidade:'" + $(this).find('td').eq(2).text() +
+                        "',Desconto:'" + $(this).find('td').eq(4).text() +
+                        "',SubTotal:'" + $(this).find('td').eq(5).text() + "'}"
+                }
+                i = 1;
+            });
+            envio += "]}";
+
+            var json = eval("(" + envio + ')');
+
+            //alertify.alert("INSERIR DADOS");
+            console.info(json);
+
+            $.ajax({
+                url: "SalvarVenda",
+                data: JSON.stringify(json),
+                type: "POST",
+                async: false,//this makes the ajax-call blocking
+                contentType: 'application/json;charset=UTF-8',
+                dataType: 'json',
+                success: function (response) {
+                    alertify.alert(response);
+                    valid = response.valid;
+                },
+                error: function (error) {
+                    alertify.alert(error);
+
+                }
+            });
+        });
+
+    });
+    //variables
+    var total = 0;
+    var valor = 0;
+    var subtotal = 0;
+    function obterCliente(Cliente) {
+
+        var watchclose = setInterval(function () {
+            $("#txtnome").val(Cliente.DadosPessoais);
+            $("#idCliente").val(Cliente.Identificacao);
+            $("#codigoCliente").val(Cliente.Codigo);
+
+        });
+    }
+
+    function fn_adicionar() {
+
+        cadeia = "<tr>"
+        cadeia = cadeia + "<td>" + $("#idproduto").val() + "</td>";
+        cadeia = cadeia + "<td>" + $("#nomeproduto").val() + "</td>";
+        cadeia = cadeia + "<td>" + $("#quantidade").val() + "</td>";
+        cadeia = cadeia + "<td>" + $("#preco").val() + "</td>";
+        cadeia = cadeia + "<td>" + $("#desconto").val() + "</td>";
+
+        var y = 0;
+        var x = 0;
+        var des = 0;
+        y = $("#quantidade").val();
+        x = $("#preco").val();
+        des = $("#desconto").val();
+        subtotal = (x * y) - des;
+        cadeia = cadeia + "<td>" + subtotal + "</td>"
+        cadeia = cadeia + "<td><a class ='elimina'><button class='btn btn-danger' type='button'><span class='fa fa-remove'></span></button></a></td>";
+        $("#detalhe tbody").append(cadeia);
+        somar();
+        fn_dar_eliminar();
+        limparCliente();
+        limpar();
+    };
+    function limpar() {
+        $("#nomeproduto").val("");
+        $("#idproduto").val("");
+        $("#preco").val("");
+        $("#ListaProduto").val("");
+        $("#quantidade").val("");
+        $("#desconto").val("");
+    }
+    function limparCliente() {
+        $("tbody tr #txtnome").val('');
+        $("tbody tr #idCliente").val('');
+        $("tbody tr #codigoCliente").val('');
+    }
+    function limparDetalhe() {
+        $("#detalhe tbody tr").val("");
+    }
+    function somar() {
+        total = total + subtotal;
+        console.info(total);
+        $("#TotalaPagar").val(total);
+
+    }
+    function restar() {
+        total = total - valor;
+        $("#TotalaPagar").val(total);
+    }
+    function fn_dar_eliminar() {
+        $("a.elimina").click(function () {
+            valor = $(this).parents("tr").find("td").eq(5).html();
+
+            $(this).parents("tr").fadeOut("normal", function () {
+                $(this).remove();
+                restar();
+            });
+        });
+    };
+
+</script>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+
+        $("#tbcliente tbody tr").dblclick(function () {
+            var Cliente = {};
+
+            Cliente.Codigo = $(this).children().eq('0').text();
+            Cliente.DadosPessoais = $(this).children().eq('1').text()
+            Cliente.Identificacao = $(this).children().eq('2').text();
+
+            window.opener.obterCliente(Cliente);
+            window.close();
+        });
+
+        <td>
+                Detalhes do Cliente
+                <a href="~/Venda/ObterClientes" rel="pop-up">
+                    <input class="btn btn-warning btn-lg col-md-12" type="button" name="link_cliente" value="Obter Cliente" />
+                </a>
+            </td>
+    });
+</script>

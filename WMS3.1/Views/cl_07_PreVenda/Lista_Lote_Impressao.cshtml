@@ -1,0 +1,71 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_03_Lote>
+
+@{
+    ViewBag.Title = "Lista_Lote";
+}
+
+<h2>@ViewBag.PreVenda</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Produto.CodigoI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Produto.NomeI)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Validade)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Posicao.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantidade)
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produto.CodigoI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produto.NomeI)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Validade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Posicao.Nome)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+
+
+        </tr>
+    }
+
+</table>
+
+<div class="container  ">
+
+    <p> @DateTime.Now.ToString("dd/MM/yy HH:mm") -  @ViewBag.Usuario</p>
+
+</div>
+
+
+
+    <script>
+
+        window.print();
+    </script>

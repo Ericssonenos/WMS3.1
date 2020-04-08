@@ -1,0 +1,92 @@
+﻿
+@{
+    ViewBag.Title = "Upload de Produtos";
+}
+
+
+
+<div class="content">
+    <p>
+        Você já ouviu dizer que Arquitetura de software é um conceito usado pela Engenharia de software?<br>Pois bem, basicamente é isso, a Arquitetura de software nada mais é do que um conceito usado pela Engenharia de software para englobar as definições dos componentes de software, suas propriedades externas, e seus relacionamentos com outros softwares.<br>O que é arquitetura de software?<br>A arquitetura de software de um sistema consiste na definição dos componentes de software, suas propriedades externas, e seus relacionamentos com outros softwares. O termo também se refere à documentação da arquitetura de software do sistema. A documentação da arquitetura do software facilita: a comunicação entre os stakeholders, registra as decisões iniciais acerca do projeto de alto nível, e permite o reuso do projeto dos componentes e padrões entre projetos.<br>De onde vem o conceito?<br>O cargo de “Arquiteto de Software” como empregado hoje na indústria do software é mais uma herança ruim da comparação entre desenvolvimento de software e construção civil. Nesta última, o arquiteto faz o projeto mas, em geral, não suja as mãos no cimento.<br>Um fato interessante é que apenas empresas grandes, com orçamentos folgados (que, em geral, desperdiçam tempo e dinheiro com futilidades e becos sem saída) costumam oferecer o cargo de arquiteto de software. Eles geralmente ficam em equipes de arquitetura, longe das equipes que “sujam” as mãos no código no dia-a-dia. Ora, isso, por si só, criam as "Torres de Marfim" e uma certa animosidade latente entre as diferentes equipes – que deveriam trabalhar em conjunto todos os dias.<br>Não faz sentido (e não é eficiente) ter equipes de arquitetura separadas, sem contato direto e constante com as equipes de desenvolvimento. Também não faz sentido empregar arquitetos de software que só planejam e não participam da execução diariamente.<br>Usando a já batida metáfora do desenvolvimento de software como jardinagem é fácil perceber que estamos longe do processo utilizado, por exemplo, na construção civil ou na indústria automobilística. Não é possível projetar todo o software com antecedência, como um prédio ou um carro, comprar a matéria-prima, contratar os operários e implementá-lo praticamente sem desvios. O projeto é o software e o software é o projeto.<br>O que é engenharia de software?<br>Engenharia de software é uma área da computação voltada à especificação, desenvolvimento e manutenção de sistemas de software, com aplicação de tecnologias e práticas de gerência de projetos e outras disciplinas, visando organização, produtividade e qualidade<br>
+
+        Friedrich Ludwig Bauer foi o primeiro dizendo:<br>
+
+        "Engenharia de Software é a criação e a utilização de sólidos princípios de engenharia a fim de obter software de maneira econômica, que seja confiável e que trabalhe em máquinas reais".<br>O próprio significado de engenharia já traz os conceitos de criação, construção, análise, desenvolvimento e manutenção.<br>
+        O termo foi criado na década de 1960 e passou a ser utilizado oficialmente em 1968 na NATO Science Committee. Sua criação surgiu numa tentativa de contornar a crise do software e dar um tratamento de engenharia (mais sistemático e controlado) ao desenvolvimento de sistemas de software complexos. Um sistema de software complexo se caracteriza por um conjunto de componentes abstratos de software (estruturas de dados e algoritmos) encapsulados na forma de procedimentos, funções, módulos, objetos ou agentes e interconectados entre si, compondo a arquitetura do software, que deverão ser executados em sistemas computacionais.
+    </p>
+
+</div>
+
+
+@Html.ActionLink("Criar Posicao", "TEsteArmazem")
+
+
+<div>
+   
+    <p> onclick="Voz()" id="Botão">testar comando de voz   </p>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
+<script>
+    // comando voz
+    if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+        var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+        var myRecognition = new SpeechRecognition();
+        myRecognition.lang = 'pt-BR';
+        function Voz() {
+            try {
+                myRecognition.start();
+
+            } catch (erro) {
+                alert('erro: ' + erro.message)
+            }
+        }
+        myRecognition.addEventListener('result', function (evt) {
+            var searchVal = evt.results[0][0].transcript;
+            $content.unmark({
+                done: function () {
+                    $content.mark(searchVal, {
+                        separateWordSearch: true,
+                        done: function () {
+                            $results = $content.find("mark");
+                            currentIndex = 0;
+                            jumpTo();
+                        }
+                    });
+                }
+            });
+        }, false)
+
+        myRecognition.addEventListener('erro', function (evt) {
+            resultado.innerHTML = 'Não ouvi muito bem';
+        }, false)
+
+    } else {
+        resultado.innerHTML = 'Seu não vegador não suporta está tecnologia'
+    }
+
+    var $content = $(".content"),
+        $results,
+        currentClass = "current",
+        offsetTop = 50,
+        currentIndex = 0;
+
+    /**
+     * Saltar para o elemento correspondente ao currentIndex
+     */
+    function jumpTo() {
+        if ($results.length) {
+            var position,
+                $current = $results.eq(currentIndex);
+            $results.removeClass(currentClass);
+            if ($current.length) {
+                $current.addClass(currentClass);
+                position = $current.offset().top - offsetTop;
+                window.scrollTo(0, position);
+            }
+        }
+    }
+
+
+</script>

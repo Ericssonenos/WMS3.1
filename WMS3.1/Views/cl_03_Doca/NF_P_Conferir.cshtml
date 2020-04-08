@@ -1,0 +1,280 @@
+﻿@model WMS3._1.Models.cl_02_Nota_Fiscal
+@using WMS3._1.Models
+@{
+    ViewBag.Title = "NF_P_Recebimento";
+}
+
+
+
+<h2> Nota: @Html.DisplayFor(model => model.Numero)-@Html.DisplayFor(model => model.Serie)</h2>
+
+
+@{
+    double TQuantidade;
+    TQuantidade = 0;
+    double SQuantidade;
+    SQuantidade = 0;
+    int _Status = 0;
+
+    //cl_03_Lote lote = new cl_03_Lote();
+}
+<script>
+    var modulo
+</script>
+
+@if (Model.Chave != string.Empty)
+{
+    using (Html.BeginForm("Conferir", null, FormMethod.Post, new { id = "Conferir"} ))
+    {
+
+        @Html.HiddenFor(model => model.Numero);
+        @Html.HiddenFor(model => model.Serie);
+        @Html.HiddenFor(model => model.Chave);
+        @Html.HiddenFor(Model => Model.ID);
+
+        <!--Informações da NF-->
+        <div class="row">
+
+            <!--Primeira Linha-->
+            <div class="row">
+
+                <div class="col-md-6 col-sm-12">
+                    <!--NF-->
+                    <div class=" col-sm-6">
+                        <p><strong> Operação</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Natureza,
+                 new { @class = "form-control", @readonly = "readonly", @style = "width:281px;;font-size:12px;" })
+                        </p>
+                    </div>
+
+
+                    <!--Chave de Acesso-->
+                    <div class=" col-sm-6 ">
+                        <p><strong>Chave de Acesso</strong></p>
+                        @Html.TextBoxFor(Model => Model.Chave, new { @class = "form-control ", @readonly = "readonly", @style = "width:311px;font-size:11px;" })
+                    </div>
+                </div>
+
+                <div class="col-md-6 ">
+                    <!--Pedido-->
+                    <div class="col-md-3" style="float-left;">
+                        <p><strong>Pedido</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Pedido,
+                 new { @class = "form-control ", @readonly = "readonly", @style = "width:136px;" })
+                        </p>
+                    </div>
+
+                    <!--Emissão-->
+                    <div class="col-md-4">
+                        <p><strong>Emissão</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Emissao,
+                 new { @class = "form-control", @readonly = "readonly", @style = "width:160px;" })
+                        </p>
+                    </div>
+                    <!--Previsão de entrega-->
+                    <div class="col-md-4">
+                        <p><strong>Previsão de Entrega</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Emissao,
+                 new { @class = "form-control", @style = "width:160px", @readonly = "readonly", })
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!--Nome-->
+            <div class="col-md-12">
+                <p><strong>Emitente</strong></p>
+                <p>
+                    @Html.TextBoxFor(Model => Model.Fornecedor.Nome,
+                 new { @class = "form-control ", @readonly = "readonly" })
+                </p>
+            </div>
+
+        </div>
+        <hr />
+
+        for (int x = 0; x < Model.Lotes.Count; x++)
+        {
+            if (Model.Lotes[x].Status == "OK")
+            {
+                _Status++;
+            }
+
+        }
+
+        <!--Informações do Produto Produtos-->
+        <div class="row container-fluid center-block">
+            <table class="Tabela" id="novo">
+                <!--Cabecalho-->
+                <tr>
+
+                    <th style="width: 130px"> C.Externo </th>
+                    <th> Descrição Produto (Externo)   </th>
+                    <th style="text-align:center;width:80px"> Lote   </th>
+                    <th style="text-align:center;width:80px"> Unidade   </th>
+                    <th style="text-align:center; width:74px"> Quantidade   </th>
+                    @if (_Status == Model.Lotes.Count)
+                    {
+                        <th >
+                            @Html.DropDownList("Modulos", new List<SelectListItem>
+                             {
+                                 new SelectListItem { Text= "Modulo A",Value="A"},
+                                 new SelectListItem { Text= "Modulo B",Value="B"},
+                                 new SelectListItem { Text= "Modulo C",Value="C"},
+                                 new SelectListItem { Text= "Modulo D",Value="D"}
+                             }, new { @style="border-style:none", @id = "lista"  })
+                        </th>               
+                    }
+                </tr>
+
+
+                <!--Conteúdo-->
+                @for (int x = 0; x < Model.Lotes.Count; x++)
+                {
+                    SQuantidade = 0;
+                    SQuantidade += Model.Lotes[x].Produto.Quantidade;
+                    TQuantidade += Model.Lotes[x].Produto.Quantidade;
+
+                    <tr>
+
+                        <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Produto.CodigoI, new { @class = "form-control", @readonly = "readonly" })</td>
+                        <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Produto.NomeI, new { @class = "form-control", @readonly = "readonly", @style = "font-size: 11px" })</td>
+                        <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Nome, new { @class = "form-control", @readonly = "readonly" })</td>
+                        <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Produto.Unidade_Medida, new { @style = "text-align:center;", @class = "form-control", @readonly = "readonly" })</td>
+
+                        @if (Model.Lotes[x].Status == "OK")
+                        {
+                            <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Quantidade, 
+                                                         new { @style = "text-align:center;", @class = "form-control", @readonly = "readonly" })</td>
+
+
+                            @Html.HiddenFor(Model => Model.Lotes[x].Conferir)
+
+                        }
+                        else
+                        {
+                            <td style="border-style:none"> @Html.TextBoxFor(Model => Model.Lotes[x].Conferir, 
+                                                          new { @style = "text-align:center;", @class = "form-control" }) </td>
+                            @Html.HiddenFor(Model => Model.Lotes[x].Quantidade)
+                        }
+                        
+                            @if (_Status == Model.Lotes.Count)
+                            {
+                                <td style="width:60px">
+
+                                    <a class="lotes" 
+                                       id="@Model.Lotes[x].ID"  
+                                       href="/cl_04_Armazem/Armazem?_Modulo=A&_ID_Lote=@Model.Lotes[x].ID">Armazenar</a>
+                                    @*@Html.ActionLink("Armazenar", "Armazem", "cl_04_Armazem", new { _Modulo = "A", _ID_Lote = Model.Lotes[x].ID }, null)*@
+
+                                </td>
+                            }
+                       
+
+
+                        @Html.HiddenFor(Model => Model.Lotes[x].Status)
+                        @Html.HiddenFor(Model => Model.Lotes[x].ID)
+                        @Html.HiddenFor(Model => Model.Lotes[x].Status)
+
+                    </tr>
+
+                    TQuantidade += Model.Lotes[x].Quantidade;
+                }
+                <tfoot>
+                    <tr>
+                        <td style="border-style:none"></td>
+                        <td style="border-style:none"></td>
+                        <td style="border-style:none"></td>
+                        <td style="text-align:center;border-style:none"> Total</td>
+
+                        <td style="text-align:center" class="form-control">@TQuantidade.ToString()</td>
+
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        if (_Status != Model.Lotes.Count)
+        {
+            <input class="col-md-6 btn btn-info" type="submit" name="submit" value="Conferir" />
+
+        }
+    
+
+    }
+}
+
+
+
+
+<script>
+
+    var select = document.querySelector('select');
+    var modulo = document.getElementsByClassName('lotes');
+    
+    lista.addEventListener('change', function ()
+    {
+       var option = select.children[select.selectedIndex];
+        var texto = option.textContent;
+       
+
+        for (var i = 0; i < modulo.length; ++i)
+        {
+             
+            var id_Lote = modulo[i].id
+             modulo[i].href= "/cl_04_Armazem/Armazem?_Modulo="+ texto.substr(-1,1) +"&_ID_Lote=" + id_Lote  ;  
+           
+        }
+    })
+
+
+</script>
+
+
+<!--CSS da tabela-->
+<style>
+
+
+    .Tabela {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      
+    }
+
+        .Tabela td, .Tabela th, .Tabela td input {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .Tabela tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .Tabela tr:hover, .Tabela input:hover {
+            background-color: #ddd;
+        }
+
+
+        .Tabela th, .Tabela th select  {
+            padding-top: 6px;
+            padding-bottom: 5px;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+        font-weight: bolder;
+    }
+</style>
+
+

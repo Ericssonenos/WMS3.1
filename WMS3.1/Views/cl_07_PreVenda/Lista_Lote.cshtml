@@ -1,0 +1,144 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_03_Lote>
+
+@{
+    ViewBag.Title = "Lista_Lote";
+}
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    
+    <div class="container">
+        <h2>@ViewBag.PreVenda - @ViewBag.Status</h2>
+        <table class="table Tabela">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Produto.CodigoI)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Produto.NomeI)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Validade)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Posicao.Nome)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Quantidade)
+                </th>
+
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Produto.CodigoI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Produto.NomeI)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Validade)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Posicao.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Quantidade)
+                    </td>
+                     <td>
+                       @Html.ActionLink("-", "", "", new { },null)
+                         <a href="#"><i class="fas fa-trash"></i></a>
+                    </td>
+                    
+                </tr>
+            }
+
+
+        </table>
+    </div>
+
+<div class="container">
+
+    @if (@ViewBag.Status == "Pendente")
+    {
+        <div class="col-md-3">
+            @Html.ActionLink("Imprimir", "Lista_Lote_Impressao", "cl_07_PreVenda", new { _PreVenda = @ViewBag.PreVenda }, new { @target = "blank", @class = "btn btn-warning" })
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("Fechar", "", "", new { _PreVenda = @ViewBag.PreVenda }, new { @class = "btn btn-primary"})
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("Conferir", "", "", new { _PreVenda = @ViewBag.PreVenda }, new { @class = "btn btn-success" })
+        </div>
+    }
+    else if (@ViewBag.Status == "Imprimir")
+    {
+        <div class="col-md-3">
+            @Html.ActionLink("Conferir", "", "", new { _PreVenda = @ViewBag.PreVenda }, new { @class = "btn btn-warning" })
+        </div>
+        <div class="col-md-3">
+            @Html.ActionLink("Abrir", "", "", new { _PreVenda = @ViewBag.PreVenda }, new { @class = "btn btn-success" })
+        </div>
+    }
+    else if (@ViewBag.Status == "Conferir")
+    {
+        <div class="col-md-3">
+            @Html.ActionLink("Faturar", "", "", new { _PreVenda = @ViewBag.PreVenda }, new { @class = "btn btn-success" })
+        </div>
+    }
+
+
+</div>
+
+<style>
+
+    dd {
+        margin-bottom: 10px;
+        background-color: whitesmoke;
+        height: 35px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+
+
+    .Tabela {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .Tabela td, .Tabela th, .Tabela td input {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .Tabela tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .Tabela tr:hover, .Tabela input:hover {
+            background-color: #ddd;
+        }
+
+
+        .Tabela th, .Tabela th select {
+            padding-top: 6px;
+            padding-bottom: 5px;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+        font-weight: bolder;
+    }
+</style>

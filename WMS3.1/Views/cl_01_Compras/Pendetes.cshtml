@@ -1,0 +1,66 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_02_Nota_Fiscal>
+
+@{
+    ViewBag.Title = "Pendentes";
+}
+
+<h2>Pedidos</h2>
+
+
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayName("NF-e")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fornecedor.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Emissao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Previsao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qtd_Produtos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qtd_Lotes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+
+            @Html.ActionLink(item.Numero, "NF_P_Recebimento", new {  _ID = item.ID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Fornecedor.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Emissao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Previsao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Qtd_Produtos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Qtd_Lotes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+
+    </tr>
+}
+
+</table>

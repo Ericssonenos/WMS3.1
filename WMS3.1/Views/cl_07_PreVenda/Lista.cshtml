@@ -1,0 +1,115 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_07_PreVenda>
+
+@{
+    ViewBag.Title = "Pré Venda";
+}
+
+<h2>Pré Venda</h2>
+
+<div class=" container ">
+
+
+    <h3>Pré Venda</h3>
+    <!--Pré Venda<-->
+    <table class="table Tabela container ">
+        <tr>
+            <th>
+                @Html.DisplayName("Pré Venda")
+            </th>
+            <th style="text-align:center">
+                @Html.DisplayName("Nome")
+            </th>
+
+            <th style="text-align:center">
+                @Html.DisplayName("Volume")
+            </th>
+            <th style="text-align:center">
+                @Html.DisplayName("Item")
+            </th>
+
+
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+
+                @if(item.Volume > 0)
+                {
+                     <td>
+                        @Html.ActionLink(item.Nome, "Lista_Lote", "cl_07_PreVenda", new { _PreVenda = item.Nome, _Status = item.Status }, null)
+                     </td>
+                }
+                else
+                {
+                    <td >
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                }
+
+
+               
+
+
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Parceiro.Nome)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Volume)
+                </td>
+                <td class="text-center">
+                    @Html.DisplayFor(modelItem => item.Itens)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+    
+
+    <style>
+
+
+        .Tabela {
+            font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        .td {
+            border-style: none
+        }
+
+        .Tabela td, .Tabela th, .Tabela td input {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .Tabela tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .Tabela tr:hover, .Tabela input:hover {
+            background-color: #ddd;
+        }
+
+
+        .Tabela th, .Tabela th select {
+            padding-top: 6px;
+            padding-bottom: 5px;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+        tfoot {
+            display: table-footer-group;
+            vertical-align: middle;
+            border-color: inherit;
+            font-weight: bolder;
+        }
+    </style>
+
+
+</div>

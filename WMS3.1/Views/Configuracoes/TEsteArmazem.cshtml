@@ -1,0 +1,60 @@
+﻿@model WMS3._1.Models.cl_0512_Modulo
+@using WMS3._1.Models;
+
+
+
+
+@{
+    ViewBag.Title = "TEsteArmazem";
+}
+
+<h2>TEsteArmazem</h2>
+
+<div class="row container-fluid">
+    @*@foreach (cl_0513_Rua Rua in Model.Ruas)
+    {
+    <p style = "text-align:center;width:100%">
+        Rua:
+        @Html.TextBoxFor(modelImpar => Rua.Nome, new { @style = "text-align:center;border-style:none;" })
+    </p>*@
+      
+        <!-- Rua -->
+        @*<div class="col-md-12 " , style="border-style:double;border-color:black">
+            <div class="col-md-12">
+
+                <div class="col-lg-5 col-md-6">
+                    @foreach (cl_0516_Nivel Nivel in Rua.Niveis)
+                    {
+                        <div class="col-md-3 col-sm-4 col-xs-6">
+                            @Html.TextBoxFor(modelImpar => Nivel.Nome, new { @style = "center;width:95px;text-align:center;border-style:none;" })
+                            @foreach (cl_0517_Detalhe Impar in Nivel.Detalhes)
+                            {
+                                @Html.TextBoxFor(modelImpar => Impar.Posicao.Nome, new { @class = "form-control ", @readonly = "readonly", @style = "text-align:center;width:95px;margin-bottom:5px;" })
+                            }
+                        </div>
+                    }
+                </div>
+
+
+
+
+                <div class="col-lg-5 col-md-6 col-md-offset-2">
+                    @foreach (cl_0516_Nivel Nivel in Rua.Niveis)
+                    {
+                        <div class="col-md-3 col-sm-4 col-xs-6">
+                            @Html.TextBoxFor(modelImpar => Nivel.Nome, new { @style = "center;width:95px;text-align:center;border-style:none;" })
+                            @foreach (cl_0517_Detalhe Par in Nivel.Detalhes)
+                            {
+                                @Html.TextBoxFor(modelPAr => Par.Posicao.Nome, new { @class = "form-control ", @readonly = "readonly", @style = "text-align:center;width:95px;margin-bottom:5px;" })
+                            }
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>*@
+    @*}*@
+</div>
+
+
+

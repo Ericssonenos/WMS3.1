@@ -1,0 +1,135 @@
+﻿@model WMS3._1.Models.cl_021_Parceiro
+
+@{
+    ViewBag.Title = " Parceiros";
+}
+
+
+<h4> @Html.DisplayFor(model => model.Nome)</h4>
+<hr />
+<div class="row container ">
+
+    <div class="col-md-3">
+
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Codigo)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.Codigo)
+            </dd>
+
+
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CNPJ_CPF)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.CNPJ_CPF)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Logaritimo)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.Logaritimo)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Codigo_Municipio)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.Codigo_Municipio)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Municipio)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.Municipio)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.CEP)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.CEP)
+            </dd>
+        </dl>
+    </div>
+    <div class="col-md-3 col-sm-0">
+
+    </div>
+    <div class="col-md-3">
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Codigo_Pais)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.Codigo_Pais)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Pais)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.Pais)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.UF)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.UF)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Telefone)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.Telefone)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Status)
+            </dt>
+
+            <dd class="form-control">
+                @Html.DisplayFor(model => model.Status)
+            </dd>
+            <dt>
+
+            </dt>
+        </dl>
+        <div class="col-md-4">
+            @Html.ActionLink("Editar", "Alterar", new { _ID_Fornecedor = Model.ID }, new { @class = "btn info", @style = "background-color: rgb(186, 217, 243)" })
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Voltar", "Lista_Simples_Parceiro", null, new { @class = "btn info", @style = "background-color:rgba(255, 211, 0, 0.35)" })
+        </div>
+        <div class="col-md-4">
+            @Html.ActionLink("Gerar Pré Vemda", "Cadastrar", "cl_07_PreVenda", new { _ID_Cliente = Model.ID }, new { @class = "btn info", @style = "background-color: rgb(180, 218, 240)" })
+        </div>
+
+
+    </div>
+   
+   
+</div>
+
+<style>
+    dd{
+        margin-bottom:10px;
+        background-color:rgba(255, 211, 0, 0.35)
+    }
+</style>

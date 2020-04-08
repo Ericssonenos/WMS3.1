@@ -1,0 +1,508 @@
+﻿@model WMS3._1.Models.cl_BI_DetalheProduto
+
+@{
+    ViewBag.Title = "Detalhes";
+}
+<head>
+    <meta http-equiv="content-language" content="pt-br" />
+</head>
+
+<h2> @Html.DisplayFor(model => model.Basico.NomeI)</h2>
+<hr />
+
+<!--Detalhes-->
+<div class=" container">
+
+    <dl class="dl-horizontal col-md-5">
+        <dt>
+            @Html.DisplayName("Codigo - Externo")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basico.CodigoF)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Nome - Externo")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basico.NomeF)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Codigo - Interno")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basico.CodigoI)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Fornecedor")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basico.Parceiro)
+        </dd>
+        <dt>
+            comandos:
+        </dt>
+        <dd style="background-color:white">
+            @Html.ActionLink("Alterar", "Alterar", new { _ID_Produto = Model.Basico.ID }, new { @class = "btn btn-info" })
+            @Html.ActionLink("Lista", "Lista_BI", null, new { @class = "btn btn-info" })
+        </dd>
+    </dl>
+
+    <dl class="dl-horizontal col-md-4">
+
+        <dt>
+            @Html.DisplayName("Unidade de Medida")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basico.Unidade_Medida)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Basico.Valor)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basico.Valor)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Estoque Mínimo")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Basico.EstoqueMinimo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Basico.Altura)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Basico.Altura)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Basico.Largura)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Basico.Largura)
+        </dd>
+    </dl>
+
+    <dl class="dl-horizontal col-md-3">
+        <dt>
+            @Html.DisplayNameFor(model => model.Basico.Comprimento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Basico.Comprimento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Basico.Peso)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Basico.Peso)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Quantidade Máxima")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Basico.QtdMaxima)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Peso Máxima")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Basico.PesoMaximo)
+        </dd>
+
+        <dt>
+            @Html.DisplayName("Valor  Saída")
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Basico.ValorSaida)
+        </dd>
+    </dl>
+
+</div>
+<hr />
+<!--Histórico-->
+<h4>Histórico</h4>
+<table class="table Tabela container ">
+    <tr>
+        <th>
+            @Html.DisplayName("Lote")
+        </th>
+        <th>
+            @Html.DisplayName("Validade")
+        </th>
+
+        <th>
+            @Html.DisplayName("Total")
+        </th>
+        <th>
+            @Html.DisplayName("Compras")
+        </th>
+        <th style="background-color:darkblue">
+            @Html.DisplayName("Entrada")
+        </th>
+        <th style="background-color:darkblue">
+            @Html.DisplayName("Quantidade")
+        </th>
+        <th>
+            @Html.DisplayName("Conferência ")
+        </th>
+        <th style="background-color:darkslategrey">
+            @Html.DisplayName("Armazem ")
+        </th>
+        <th style="background-color:darkslategrey">
+            @Html.DisplayName("Posições ")
+        </th>
+        <th style="background-color:darkslategrey">
+            @Html.DisplayName("Quantidade ")
+        </th>
+        <th>
+            @Html.DisplayName("Inventário")
+        </th>
+    </tr>
+
+    @foreach (var item in Model.LBI)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Lote)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Validade)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Compras)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Entrada)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.QTD_Entrada)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Conferencia)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Armazenar)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Posicoes)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.QTD_Armazenar)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Inventario)
+            </td>
+        </tr>
+    }
+
+</table>
+<hr />
+<!--Quantidades-->
+<div class="container-fluid ">
+    <h4>Quantidades</h4>
+    <dl class="dl-horizontal col-md-3">
+        <dt>
+            @Html.DisplayName("Atribuir")
+        </dt>
+        <dd>
+            @Html.TextBoxFor(Model => Model.Basico.Conferir, new { @class = "form-control", @id = "QTDAtribuir" })
+        </dd>
+    </dl>
+    <dl class="dl-horizontal col-md-3">
+        <dt>
+            @Html.DisplayName("Total")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantidades.Quantidade)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal col-md-3">
+        <dt>
+            @Html.DisplayName("Vendido")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantidades.Vendido)
+        </dd>
+    </dl>
+    <dl class="dl-horizontal col-md-3">
+        <dt>
+            @Html.DisplayName("Disponivel")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Quantidades.Disponivel)
+        </dd>
+    </dl>
+
+</div>
+<hr />
+
+<!--Posições e Pre-vendas-->
+<div class="container-fluid ">
+    <!--Psosições-->
+    <div class=" col-md-6">
+
+        <h3>Posições</h3>
+
+        <table class="table Tabela container ">
+            <tr>
+                <th>
+                    @Html.DisplayName("Lote")
+                </th>
+                <th>
+                    @Html.DisplayName("Posição")
+                </th>
+                <th>
+                    @Html.DisplayName("Validade")
+                </th>
+                <th>
+                    @Html.DisplayName("Total")
+                </th>
+                <th>
+                    @Html.DisplayName("Status")
+                </th>
+                <th>
+                    @Html.DropDownList("Modulos", new List<SelectListItem>
+                       {
+                        new SelectListItem { Text= "Modulo A",Value="A"},
+                        new SelectListItem { Text= "Modulo B",Value="B"},
+                        new SelectListItem { Text= "Modulo C",Value="C"},
+                        new SelectListItem { Text= "Modulo D",Value="D"}
+                        }, new { @style = "border-style:none", @id = "lista" })
+                </th>
+            </tr>
+
+            @foreach (var item in Model.Posicoes)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Posicao.Nome)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Validade)
+                    </td>
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Quantidade)
+                    </td>
+                    @if (item.Posicao.Nome.ToString() == "Compras")
+                    {
+                        <td class="text-center" style="font-weight:800">
+                            Indisponível
+                        </td>
+                        <td class="text-center">
+                            <a href="#">(NF)</a>
+                        </td>
+                    }
+                    else if (item.PreVenda == "Disponivel")
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.PreVenda)
+                        </td>
+                        <td class="text-center">
+                            <a class="lotes"
+                               id="@item.ID"
+                               name="@item.Posicao.ID"
+                               href="/cl_04_Armazem/Armazem?_Modulo=A&_ID_Lote=@item.ID&_ID_Origem=@item.Posicao.ID">
+                                Transferir
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text-center" style="font-weight:800">
+                            Pré_Venda
+                        </td>
+                        <td class="text-center">
+
+                            @Html.ActionLink(item.PreVenda, "Lista_Lote", "cl_07_PreVenda", new { _PreVenda = item.PreVenda, _Status = item.Status }, null)
+
+
+                        </td>
+                    }
+
+                </tr>
+            }
+        </table>
+    </div>
+    <!--PreVenda-->
+    <div class=" col-md-6">
+        <h3>Pré Venda</h3>
+        <!--Pré Venda<-->
+        <table class="table Tabela container ">
+
+            <tr>
+                <th>
+                    @Html.DisplayName("Pré Venda")
+                </th>
+                <th>
+                    @Html.DisplayName("Nome")
+                </th>
+                <th>
+                    @Html.DisplayName("Itens")
+                </th>
+                <th>
+                    @Html.DisplayName("Volume")
+                </th>
+                <th>
+                    @Html.DisplayName("Atribuir")
+                </th>
+            </tr>
+
+            @foreach (var item in Model.PreVendas)
+            {
+                <tr>
+                    @if (item.Volume > 0)
+                    {
+                        <td>
+                            @Html.ActionLink(item.Nome, "Lista_Lote", "cl_07_PreVenda", new { _PreVenda = item.Nome, _Status = item.Status }, null)
+                        </td>
+                    }
+                    else
+                    {
+                        <td class="text-center">
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                    }
+
+
+
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Parceiro.Nome)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Volume)
+                    </td>
+                    <td class="text-center">
+                        @Html.DisplayFor(modelItem => item.Itens)
+                    </td>
+                    <td>
+                        <a class="Prenotas"
+                           id="@item.ID"
+                           name="@Model.Basico.ID"
+                           href="/cl_07_PreVenda/Separar_Produto?_ID_Produto=@Model.Basico.ID&_ID_Prevenda=@item.ID&_Conferir=@Model.Basico.Conferir">
+                            Atribuir
+                        </a>
+                    </td>
+                </tr>
+            }
+
+        </table>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    // Definir destino do armazem
+    lista.addEventListener('change', function () {
+        var select = document.querySelector('select');
+        var modulo = document.getElementsByClassName('lotes');
+        var option = select.children[select.selectedIndex];
+        var texto = option.textContent;
+
+
+        for (var i = 0; i < modulo.length; ++i) {
+
+            var id_Lote = modulo[i].id
+            var id_Posicao = modulo[i].name
+
+            modulo[i].href = "/cl_04_Armazem/Armazem?" +
+                "_Modulo=" + texto.substr(-1, 1) +
+                "&_ID_Lote=" + id_Lote +
+                "&_ID_Origem=" + id_Posicao;
+
+        }
+    })
+    // definir a quantidade que sera separada para prevenda
+    QTDAtribuir.addEventListener('change', function () {
+        var Prenotas = document.getElementsByClassName('Prenotas');
+        var Valor = document.getElementById('QTDAtribuir')
+        for (var i = 0; i < Prenotas.length; ++i) {
+
+            var id_Produto = Prenotas[i].name
+            var _ID_Prevenda = Prenotas[i].id
+
+            Prenotas[i].href = href = "/cl_07_PreVenda/Separar_Produto?" +
+                "_ID_Produto=" + id_Produto +
+                "&_ID_Prevenda=" + _ID_Prevenda +
+                "&_Conferir=" + Valor.value;
+
+        }
+
+    })
+
+
+</script>
+<style>
+
+    dd {
+        margin-bottom: 10px;
+        background-color: whitesmoke;
+        height: 35px;
+        margin-bottom: 5px;
+        border-radius: 5px;
+    }
+
+
+    .Tabela {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .Tabela td, .Tabela th, .Tabela td input {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .Tabela tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .Tabela tr:hover, .Tabela input:hover {
+            background-color: #ddd;
+        }
+
+
+        .Tabela th, .Tabela th select {
+            padding-top: 6px;
+            padding-bottom: 5px;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+        font-weight: bolder;
+    }
+</style>
+
+
+
+

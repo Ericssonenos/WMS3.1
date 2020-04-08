@@ -1,0 +1,35 @@
+﻿@model WMS3._1.Models.Sistema.UserView
+
+@{
+    ViewBag.Title = "Permições";
+}
+
+
+<h3>@Html.DisplayFor(model => model.Nome)</h3>
+<hr />
+
+
+<hr />
+
+<h4>Permissões</h4>
+
+<table class="table">
+    @for (int i = 0; i < Model.Roles.Count; i++)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model.Roles[i].Nome)
+            </td>
+            <td>
+                @Html.ActionLink("Excluir", "ExcluirRole", new { UserId = Model.UserId, RoleId = Model.Roles[i].RoleID })
+            </td>
+        </tr>
+    }
+
+</table>
+
+@Html.ActionLink("Voltar", "Index", null, new { @class = "btn btn-primary" })
+@Html.ActionLink("Nova Permissão", "addRole", new { UserId = Model.UserId }, new { @class = "btn btn-info" })
+
+
+

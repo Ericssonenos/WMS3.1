@@ -1,0 +1,141 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_0212_BI_Parceiros>
+
+@{
+    ViewBag.Title = "Fornecedores";
+}
+
+
+<script src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+    google.charts.load('current', { packages: ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+        const container = document.getElementById('grafico');
+        var lista = document.getElementsByTagName('tr')
+
+       
+        const data = new google.visualization
+
+            data.arrayToDataTable([['Forncedor', 'QTD']])
+
+            for (int x = 1; x < @Model.Count(); x++)
+            {
+              data.arrayToDataTable([[lista[1].children[0].children[0].innerHTML, parseFloat(lista[1].children[3].innerHTML)]]
+            };
+
+            
+          
+        
+        const options = {
+            title: 'Top 5 Fornecedores',
+            heigth: 400,
+            width: 800
+            
+        }
+        const chart = new google.visualization.PieChart(container)
+        chart.draw(data, options)
+    }
+
+</script>
+
+
+
+
+
+<h2>Fornecedores</h2>
+
+<div id="grafico">
+
+</div>
+
+<table class="table Tabela">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayName("CPF/CNPJ")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Produtos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantidade)
+        </th>
+        <th>
+            @Html.DisplayName("Primeira Compra")
+        </th>
+        <th>
+            @Html.DisplayName("Ultima Compra")
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink(item.Nome,
+               "Detalhes", new { _ID_Fornecedor = item.ID })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CNPJ_CPF)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Produtos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantidade)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Primeira_Compra)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Ultima_Compra)
+            </td>
+      
+        </tr>
+    }
+
+</table>
+
+
+<style>
+
+
+    .Tabela {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .Tabela td, .Tabela th, .Tabela td input {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .Tabela tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .Tabela tr:hover, .Tabela input:hover {
+            background-color: #ddd;
+        }
+
+
+        .Tabela th, .Tabela th select {
+            padding-top: 6px;
+            padding-bottom: 5px;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+        font-weight: bolder;
+    }
+</style>

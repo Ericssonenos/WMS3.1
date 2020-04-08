@@ -1,0 +1,129 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_0311_BI_Produto>
+
+@{
+    ViewBag.Title = "Lista_BI";
+}
+
+    <head>
+        <meta http-equiv="content-language" content="pt-br" />
+    </head>
+<h2>Produtos</h2>
+
+
+
+<table class="table Tabela ">
+    <tr>
+
+        <th>
+            @Html.DisplayName("Código")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Lotes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Posicoes)
+        </th>
+        <th>
+            @Html.DisplayName("Total")
+        </th>
+        <th>
+            @Html.DisplayName("Vendido")
+        </th>
+        <th>
+            @Html.DisplayName("Disponível")
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.ValidadeMinima)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Status)
+        </th>
+
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr class= @item.Status>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.C_Interno)
+            </td>
+            <td class="text-center">
+                @Html.ActionLink(item.Nome,
+               "Detalhes", new { _ID_Produto = item.ID })
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Lotes)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Posicoes)
+            </td>
+            <td class="text-center" lang="pt-br">
+                @Html.DisplayFor(modelItem => item.Quantidade,new {@lang ="pt-br" })
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Vendido)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Disponivel)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.ValidadeMinima)
+            </td>
+            <td class="text-center">
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+        </tr>
+    }
+
+</table>
+<style>
+
+    .VENCIDO{
+        color:red;
+        font-weight:800;
+    }
+
+    .OK{
+
+    }
+
+    .Tabela {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .Tabela td, .Tabela th, .Tabela td input {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .Tabela tr:nth-child(even)  {
+            background-color: #f2f2f2;
+        }
+
+        .Tabela tr:hover, .Tabela input:hover {
+            background-color: #ddd;
+        }
+
+
+        .Tabela th, .Tabela th select {
+            padding-top: 6px;
+            padding-bottom: 5px;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+        font-weight: bolder;
+    }
+</style>

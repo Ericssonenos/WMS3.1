@@ -1,0 +1,220 @@
+﻿@model WMS3._1.Models.cl_BI_Recebimento
+@{
+    ViewBag.Title = "Entrada";
+}
+
+    <div class="container-fluid">
+
+
+        <h2>Entrada</h2>
+
+
+        @using (Html.BeginForm("Entrada", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "_romaneio" }))
+        {
+            <!--Primeira Linha-->
+            <div class="row">
+                <!--Se for par Pesquisar o romaneio-->
+                @if (@ViewBag.Romaneio == "Pesquisar")
+                {
+                    <!--Romaneio-->
+                    <div class="col-md-2">
+                        <p><strong> Romaneio</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Romaneio.Nome,
+                            new { @class = "form-control", @style = "width:110px", @onchange = "Pesquisar()" })
+                        </p>
+                    </div>
+
+                    <a style="display:none" href="#" id="conferir">content</a>
+
+                }
+                else if (@ViewBag.Romaneio == "Romaneio")
+                {
+                    <!--Se for o cadasto do Romaneio -->
+                    <!--Romaneio-->
+                    <div class="col-md-2">
+                        <p><strong> Romaneio</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Romaneio.Nome,
+                            new { @class = "form-control", @style = "width:110px", @readonly = "readonly" })
+                        </p>
+                    </div>
+
+                    <!--Placa-->
+                    <div class="col-md-2 ">
+                        <p><strong>Placa</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Romaneio.Placa,
+                            new { @class = "form-control ", @style = "width:110px" })
+                        </p>
+                    </div>
+
+                    <!--Motorista-->
+                    <div class="col-md-3 ">
+                        <p><strong>Motorista</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Romaneio.Motorista,
+                            new { @class = "form-control ", @style = "width:250px" })
+                        </p>
+                    </div>
+
+                    <!--Chave de Acesso-->
+                    <div class="col-md-5 ">
+                        <p><strong>Chave de Acesso</strong></p>
+                        @Html.TextBoxFor(Model => Model.Romaneio.NF.Chave, new { @class = "form-control" })
+
+                    </div>
+                     <div class="col-md-6">
+                        <input class="col-md-6 text-center" type="submit" name="submit" value="Entrada" />
+                    </div>
+                     <div  class="col-md-6" style="color:green;font-weight:800">
+                        @ViewBag.Sucesso
+              
+                    </div>
+                    <div  class="col-md-6" style="color:red;text-align:center;font-weight:800">
+             
+                        @ViewBag.Error
+                    </div>
+                }
+                else
+                {
+                    <!--Se for o cadasto do Romaneio -->
+                    <!--Romaneio-->
+                    <div class="col-md-2">
+                        <p><strong> Romaneio</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Romaneio.Nome,
+                            new { @class = "form-control", @style = "width:110px", @readonly = "readonly" })
+                        </p>
+                    </div>
+
+                    <!--Placa-->
+                    <div class="col-md-2 ">
+                        <p><strong>Placa</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Romaneio.Placa,
+                            new { @class = "form-control ", @style = "width:110px", @readonly = "readonly" })
+                        </p>
+                    </div>
+
+                    <!--Motorista-->
+                    <div class="col-md-3 ">
+                        <p><strong>Motorista</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Romaneio.Motorista,
+                            new { @class = "form-control ", @style = "width:250px", @readonly = "readonly" })
+                        </p>
+                    </div>
+
+                    <!--Chave de Acesso-->
+                    <div class="col-md-5 ">
+                        <p><strong>Chave de Acesso</strong></p>
+                        @Html.TextBoxFor(Model => Model.Romaneio.NF.Chave, new { @class = "form-control" })
+
+                    </div>
+                    <div class="col-md-6">
+                        <input class="col-md-6 text-center" type="submit" name="submit" value="Entrada" />
+                    </div>
+                     <div  class="col-md-6" style="color:green;font-weight:800">
+                        @ViewBag.Sucesso
+              
+                    </div>
+                    <div  class="col-md-6" style="color:red;text-align:center;font-weight:800">
+             
+                        @ViewBag.Error
+                    </div>
+
+
+                }
+            </div>
+           
+            <hr />
+        }
+
+    </div>
+
+
+
+
+    <table class="table">
+        <tr>
+
+            <th>
+                @Html.DisplayName("NF")
+            </th>
+            <th>
+                @Html.DisplayName("Fornecedor")
+            </th>
+            <th>
+                @Html.DisplayName("Emissão")
+            </th>
+            <th>
+                @Html.DisplayName("Previsão")
+            </th>
+            <th>
+                @Html.DisplayName("Produtos")
+            </th>
+            <th>
+                @Html.DisplayName("Lotes")
+            </th>
+            <th>
+                @Html.DisplayName("Quantidade")
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.NFs)
+        {
+            <tr>
+
+                <td>
+
+                    @Html.ActionLink(item.Numero, "NF_P_Conferir","cl_03_Doca", new { _ID = item.ID },null)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fornecedor.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Emissao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Previsao)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qtd_Produtos)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qtd_Lotes)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+
+            </tr>
+        }
+
+    </table>
+
+
+
+
+<script>
+    
+    var limpar = document.getElementById('Romaneio_NF_Chave')
+    document.getElementById('Romaneio_NF_Chave').focus();
+
+    limpar.value = "";
+    
+     function Pesquisar()
+    {
+         
+        var Romaneio = document.getElementById('Romaneio_Nome').value;
+        var conferir = document.getElementById('conferir');
+        conferir.href= "/cl_02_Recebimento/Romaneio?_Romaneio="+ Romaneio ;
+         document.getElementById('conferir').click()
+       
+    }
+
+
+</script>
+

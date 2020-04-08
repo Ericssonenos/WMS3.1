@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="content-language" content="pt-br" />
+    <title>- Pantanal Agricula</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <style>
+
+        .menu li ul {
+            top: 45px;
+            left: 0;
+            background-color: rgba(20, 21, 22, 0.81);
+            display: none;
+        }
+
+        .menu li:hover ul, .menu li.over ul {
+            display: block;
+        }
+
+        .menu li ul li {
+            /*border:1px solid #c0c0c0;*/
+            display: block;
+            width: 150px;
+        }
+    </style>
+
+    <script>
+
+
+        function ajustar(opção) {
+            var x = window.innerWidth
+                || document.documentElement.clientWidth
+                || document.body.clientWidth;
+
+
+
+
+            if (x < 790)
+                opção.children[1].children[0].style = "position:inherit;"
+            else
+                opção.children[1].children[0].style = "position:absolute;"
+        }
+
+    </script>
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div>
+            <div class="navbar-collapse collapse menu">
+                <ul class="nav navbar-nav ">
+                    <li>@Html.ActionLink("Início", "Index", "Home")</li>
+
+
+                    <li onmouseover="ajustar(this)">
+                        <a href="#">Compras</a>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Upload", "Upload", "cl_01_Compras")</li>
+                                <li>@Html.ActionLink("Pendentes de Entrega", "Pendetes", "cl_01_Compras", null, null)</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li onmouseover="ajustar(this)">
+                        <a href="#">Entrada</a>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Romaneio", "Entrada", "cl_02_Recebimento")</li>
+                                <li>@Html.ActionLink("Doca", "Romaneio", "cl_03_Doca")</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li onmouseover="ajustar(this)">
+                        <a href="#">Armazem</a>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Modulo A", "Armazem", "cl_04_Armazem", new { _Modulo = "A", _ID_Lote = -1 }, null)</li>
+                                <li>@Html.ActionLink("Modulo B", "Armazem", "cl_04_Armazem", new { _Modulo = "B", _ID_Lote = -1 }, null)</li>
+                                <li>@Html.ActionLink("Modulo C", "Armazem", "cl_04_Armazem", new { _Modulo = "C", _ID_Lote = -1 }, null)</li>
+                                <li>@Html.ActionLink("Modulo D", "Armazem", "cl_04_Armazem", new { _Modulo = "D", _ID_Lote = -1 }, null)</li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li onmouseover="ajustar(this)">
+                        <a href="#">BI</a>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Fornecedor", "Lista_BI", "cl_05_Fornecedor")</li>
+                                <li>@Html.ActionLink("Produto", "Lista_BI", "cl_06_Produto")</li>
+                                <li><a href="#">NF</a></li>
+                            </ul>
+                        </div>
+                    </li>
+
+                    <li onmouseover="ajustar(this)">
+                        <a href="#">Saída</a>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Pré Venda", "Lista", "cl_07_PreVenda")</li>
+                        
+                            </ul>
+                        </div>
+                    </li>
+
+
+                    <li onmouseover="ajustar(this)" style="z-index:100001">
+                        <a href="#">Cadastro</a>
+                        <div class="navbar-collapse collapse">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Usuários", "Index", "cl_00_Usuario")</li>
+                                <li>@Html.ActionLink("Parceiro", "Lista_Simples_Parceiro", "cl_05_Fornecedor")</li>
+                                <li><a href="#">Produtos</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    @*<li>@Html.ActionLink("Configurações", "Index", "Configuracoes")</li>*@
+                </ul>
+               
+                    @Html.Partial("_LoginPartial")
+            </div>
+
+    
+
+        </div>
+    </div>
+    <div class="container-fluid body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - MG SMART WMS</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

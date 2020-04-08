@@ -1,0 +1,61 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_03_Lote>
+
+@{
+    ViewBag.Title = "AtribuirPatente";
+}
+
+<h2>Atribuir Patente</h2>
+
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Lote")
+        </th>
+        <th>
+            @Html.DisplayName("Cóodigo")
+        </th>
+        <th>
+            @Html.DisplayName("Descrição")
+        </th>
+
+
+        <th style="width:50px">
+            @Html.DisplayNameFor(model => model.Quantidade)
+        </th>
+        <th style="width:100px">
+            @Html.DisplayName("Patente")
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Nome)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Produto.CodigoF)
+    </td>
+    <td>
+        @Html.DisplayFor(modelItem => item.Produto.NomeF)
+    </td>
+
+    <td>
+        @Html.TextBoxFor(modelItem => item.Quantidade, new { @class = "form-control" })
+    </td>
+    <td>
+        @Html.TextBoxFor(modelItem => item.Patente.Nome, new { @class = "form-control" })
+    </td>
+
+
+    <td>
+        @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
+        @Html.ActionLink("Details", "Details", new { id = item.ID }) |
+        @Html.ActionLink("Delete", "Delete", new { id = item.ID })
+    </td>
+</tr>
+}
+
+</table>

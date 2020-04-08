@@ -1,0 +1,82 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_021_Parceiro>
+
+@{
+    ViewBag.Title = "Fornecedores";
+}
+
+    <h2>Fornecedores</h2>
+
+<p>
+    @Html.ActionLink("Criar Novo", "Cadastrar")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Codigo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CNPJ_CPF)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Logaritimo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Municipio)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CEP)
+        </th>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Pais)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UF)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Telefone)
+        </th>
+ 
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Codigo)
+        </td>
+        <td>
+            @Html.ActionLink(item.Nome,
+           "Detalhes", new { _ID_Fornecedor = item.ID })
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CNPJ_CPF)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Logaritimo)
+        </td>
+   
+        <td>
+            @Html.DisplayFor(modelItem => item.Municipio)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CEP)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pais)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UF)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Telefone)
+        </td>
+       
+  
+    </tr>
+}
+
+</table>

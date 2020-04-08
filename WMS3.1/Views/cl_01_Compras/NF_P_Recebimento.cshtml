@@ -1,0 +1,181 @@
+﻿@model WMS3._1.Models.cl_02_Nota_Fiscal
+
+@{
+    ViewBag.Title = "NF_P_Recebimento";
+}
+
+<h2> Nota: @Html.DisplayFor(model => model.Numero)-@Html.DisplayFor(model => model.Serie)</h2>
+
+
+
+
+@{ 
+        double TQuantidade;
+        TQuantidade = 0;
+        double SQuantidade;
+        SQuantidade = 0;
+}
+         
+
+@if (Model.Chave != string.Empty)
+{
+    <!--Informações da NF-->
+    <div class="row container-fluid">
+
+        <!--Primeira Linha-->
+        <div class="row">
+
+            <div class="col-md-6 col-sm-12">
+                <!--NF-->
+                <div class=" col-sm-6">
+                    <p><strong> Operação</strong></p>
+                    <p>
+                        @Html.TextBoxFor(Model => Model.Natureza,
+                        new { @class = "form-control", @readonly = "readonly", @style = "width:281px;;font-size:12px;" })
+                    </p>
+                </div>
+
+
+                <!--Chave de Acesso-->
+                <div class=" col-sm-6 ">
+                    <p><strong>Chave de Acesso</strong></p>
+                    @Html.TextBoxFor(Model => Model.Chave, new { @class = "form-control ", @readonly = "readonly", @style = "width:311px;font-size:11px;" })
+                </div>
+            </div>
+
+            <div class="col-md-6 ">
+                <!--Pedido-->
+                <div class="col-md-3" style="float-left;">
+                    <p><strong>Pedido</strong></p>
+                    <p>
+                        @Html.TextBoxFor(Model => Model.Pedido,
+                        new { @class = "form-control ", @readonly = "readonly", @style = "width:136px;" })
+                    </p>
+                </div>
+
+                <!--Emissão-->
+                <div class="col-md-4">
+                    <p><strong>Emissão</strong></p>
+                    <p>
+                        @Html.TextBoxFor(Model => Model.Emissao,
+                        new { @class = "form-control", @readonly = "readonly", @style = "width:160px;" })
+                    </p>
+                </div>
+                <!--Previsão de entrega-->
+                <div class="col-md-4">
+                    <p><strong>Previsão de Entrega</strong></p>
+                    <p>
+                        @Html.TextBoxFor(Model => Model.Emissao,
+                        new { @class = "form-control", @style = "width:160px", @readonly = "readonly", })
+                    </p>
+                </div>
+            </div>
+
+
+
+
+        </div>
+
+        <!--Nome-->
+        <div class="col-md-12">
+            <p><strong>Emitente</strong></p>
+            <p>
+                @Html.TextBoxFor(Model => Model.Fornecedor.Nome,
+                new { @class = "form-control ", @readonly = "readonly" })
+            </p>
+        </div>
+
+    </div>
+    <hr />
+    <!--Informações do Produto Produtos-->
+    <div class="row container-fluid">
+        <table class="Tabela" id="novo">
+            <!--Cabecalho-->
+            <tr>
+
+                <th style="width: 130px"> Código F  </th>
+                <th > Descrição Produto   </th>
+                <th style="text-align:center;width:80px"> Lote   </th>
+                <th style="text-align:center;width:80px"> Unidade   </th>
+                <th style="text-align:center; width:74px"> Quantidade   </th>
+
+
+          
+
+
+            </tr>
+
+            <!--Conteúdo-->
+            @for (int x = 0; x < Model.Lotes.Count; x++)
+            {
+                SQuantidade = 0;
+                SQuantidade += Model.Lotes[x].Produto.Quantidade;
+                TQuantidade += Model.Lotes[x].Produto.Quantidade;
+
+                <tr>
+                    <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Produto.CodigoF, new { @class = "form-control", @readonly = "readonly" })</td>
+                    <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Produto.NomeF, new { @class = "form-control", @readonly = "readonly", @style = "font-size: 11px" })</td>
+                    <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Nome, new { @class = "form-control", @readonly = "readonly" })</td>
+                    <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Produto.Unidade_Medida, new {@style="text-align:center;", @class = "form-control", @readonly = "readonly" })</td>
+                    <td style="border-style:none">@Html.TextBoxFor(Model => Model.Lotes[x].Quantidade, new { @style="text-align:center;", @class = "form-control", @readonly = "readonly" })</td>
+                </tr>
+              
+                 TQuantidade += Model.Lotes[x].Quantidade;
+            }
+            <tfoot>
+                <tr>
+                    <td style="border-style:none"></td>
+                    <td style="border-style:none"></td>
+                    <td style="border-style:none" ></td>
+                    <td style="text-align:center;border-style:none"  > Total</td>
+
+                    <td style="text-align:center" class = "form-control">@TQuantidade.ToString()</td>
+
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+}
+
+
+
+<!--CSS da tabela-->
+<style>
+
+
+    .Tabela {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .Tabela td, .Tabela th,  .Tabela td input {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .Tabela tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .Tabela tr:hover, .Tabela input:hover   {
+            background-color: #ddd;
+        }
+      
+
+        .Tabela th {
+            padding-top: 6px;
+            padding-bottom: 5px;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+        font-weight: bolder;
+    }
+</style>

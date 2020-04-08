@@ -1,0 +1,430 @@
+﻿@model WMS3._1.Models.cl_0511_Armazem
+@using WMS3._1.Models
+
+@{
+    ViewBag.Title = "Armazem";
+}
+@*<meta media="viewport" content="width=devide-width">*@
+<h4 style="width:100%;text-align:center">Módulo: @Model.Modulo.Modulo</h4>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--Primeira linha que obtem as informações do Lote-->
+<div class="row container-fluid navbar-fixed-top" , style="margin-top: 75px; background-color:white; z-index:100">
+
+
+
+    <div class="col-md-6">
+      
+        <div class="col-md-5 col-sm-5 col-xs-6">
+            @Html.DisplayName("Lote")
+            @Html.TextBoxFor(Model => Model.Lote.Nome, new { @class = "form-control", @readonly = "readonly", @style = "font-size:11px" })
+        </div>
+
+        
+
+        <div class="col-md-5 col-sm-5 col-xs-6">
+            @Html.DisplayName("Disponível")
+            @Html.TextBoxFor(Model => Model.Lote.Quantidade, new { @class = "form-control", @readonly = "readonly" })
+        </div>
+
+
+    </div>
+
+
+
+    <div class="col-md-6 ">
+
+
+        <div class="col-md-12">
+            @Html.DisplayName("Descrição Interna")
+            @Html.TextBoxFor(Model => Model.Lote.Produto.NomeI, new { @class = "form-control", @readonly = "readonly", @style = "font-size:11px" })
+        </div>
+    </div>
+
+
+</div>
+
+<hr />
+
+
+<div class="Cadastro" >
+    @using (Html.BeginForm("Armazenar", null, FormMethod.Post, new { id = "Ps" }))
+    {
+        @Html.HiddenFor(Model => Model.Lote.ID)
+        @Html.HiddenFor(Model => Model.Modulo.Modulo)
+        @Html.HiddenFor(Model => Model.Posicao.ID)
+        @Html.HiddenFor(Model => Model.ID_NF)
+
+
+
+
+        //Posicao
+        <div>
+            <div style="width:95px;">
+                @Html.DisplayName("Posição")
+                @Html.HiddenFor(Model => Model.ID_Saida)
+
+                <a id="Pesquisa"
+                   href="">
+                    @Html.TextBoxFor(Model => Model.Posicao.Nome, new
+               {
+                   @class = "form-control",
+                   @style = "text-align:center;font-weight:bolder",
+                   @readonly = "readonly"
+               })
+                    
+                </a>
+            </div>
+        </div>
+
+        //Quantidade
+        <div style="margin-top:10px">
+
+            <div style="width:95px;text-align:center">
+                @Html.DisplayName("Quantidade")
+                @Html.TextBoxFor(Model => Model.Lote.Conferir, new { @class = "form-control", @style = "text-align:center", onchange = "validarqtd(this)" })
+            </div>
+        </div>
+
+        //Armazenar
+        <div style="margin-top:10px">
+
+            <div style="width:95px;text-align:center">
+                <input type="submit" id="Armazenar" value="Armazenar" class="form-control" style="background-color:palegreen" />
+            </div>
+        </div>
+
+        //Voltar
+        if (Model.ID_NF != -1)
+        {
+            <div style="margin-top:20px">
+                <div style="width:95px;text-align:center">
+
+                    @Html.ActionLink("Voltar", "NF_P_Conferir", "cl_03_Doca", new { _ID = Model.ID_NF },
+            new { @class = "form-control", @style = "text-align:center;background-color:grey; color:white" })
+                </div>
+            </div>
+        }
+            <div style="margin-top:20px;width:95px;text-align:center">
+                <i onclick="Voz()" class="fa fa-microphone text-center" style="font-size:36px"></i>
+            </div>
+
+            }
+
+
+
+
+        </div>
+
+
+
+
+<div class="row container-fluid">
+    @{
+        int Soma = 0;
+        int ate = Model.Modulo.QTD_Numeros;
+        char N;
+        string ladocelular = "";
+
+    }
+
+    @for (int Rua = 1; Rua <= Model.Modulo.QTD_Ruas; Rua++)
+    {
+        <p style="text-align:center;width:100%">
+            @Rua.ToString()
+        </p>
+        <br />
+        <br />
+        <!-- Rua -->
+        <div class="col-md-12 col-sm-12 col-xs-12 " , style="border-style:double;border-color:black;">
+
+            @for (int lado = 1; lado >= 0; lado--)
+            {
+                <div class="col-lg-5 col-md-6">
+                    @foreach (string niveis in Model.Modulo.Niveis)
+                    {
+
+                        N = char.Parse(niveis.ToString());
+
+                        if (N == 'B' || N == 'D')
+                        {
+                            ladocelular = "col-xs-offset-6 col-md-offset-0";
+                        }
+                        else
+                        {
+                            ladocelular = "";
+                        }
+
+                        <div class="  col-md-3 col-sm-4 col-xs-3 col-md-offset-0 @ladocelular ">
+
+                            @Html.TextBox(Rua.ToString(), niveis.ToString(), new { @style = "width:95px;text-align:center;border-style:none;" })
+                            @for (int Numero = Soma; Numero < ate; Numero++)
+                            {
+                                <input class="@Model.Modulo.Posicoes[Numero].Class_Posicao posicao  "
+                                       id=@Model.Modulo.Posicoes[Numero].ID
+                                       readonly="readonly"
+                                       type="button"
+                                       name=@Model.Modulo.Posicoes[Numero].Nome
+                                       value=@Model.Modulo.Posicoes[Numero].Nome
+                                       onclick="addposicao(this)">
+                            }
+                        </div>
+
+
+
+
+
+                        Soma = ate;
+                        ate = ate + Model.Modulo.QTD_Numeros;
+                    }
+
+
+                </div>
+                if (lado == 1)
+                {
+                    <div class="col-md-2">
+                        <p style="text-align:center;width:100%">
+
+
+                        </p>
+                    </div>
+                }
+            }
+        </div>
+    }
+</div>
+
+
+
+
+
+        <style>
+
+            
+
+            .Cadastro{
+                width:110px;
+                position:fixed;
+                left:50%;
+                margin-left: -5%;
+                margin-top: 90px;
+                z-index:100000
+            }
+
+            @@keyframes fa-blink {
+                0% {
+                    opacity: 1;
+                    width: 94px;
+                }
+
+                50% {
+                    opacity: 0.5;
+                    width: 95px;
+                }
+
+                100% {
+                    opacity: 0;
+                    width: 96px;
+                }
+            }
+
+            .ALERTA {
+                -webkit-animation: fa-blink 1.55s linear infinite;
+                -moz-animation: fa-blink 1.45s linear infinite;
+                -ms-animation: fa-blink 1.45s linear infinite;
+                -o-animation: fa-blink 1.45s linear infinite;
+                animation: fa-blink 1.85s linear infinite;
+            }
+
+            .posicao {
+                width: 92px;
+                height: 35px;
+                margin-bottom: 5px;
+                border-radius: 5px;
+            }
+
+
+
+            .Verde {
+                background-color: forestgreen;
+                color: white;
+                font-weight: 800;
+                color: white;
+            }
+
+            .Azul {
+                background-color: rgba(3, 3, 151, 0.81);
+                color: white;
+                font-weight: 800;
+                color: white;
+            }
+
+            .Branco {
+                background: #f6f5f4;
+                background: -moz-linear-gradient(-45deg, #f6f5f4 0%, #f6f5f4 50%, #ffffff 51%, #ffffff 100%);
+                background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#f6f5f4), color-stop(50%,#f6f5f4), color-stop(51%,#ffffff), color-stop(100%,#ffffff));
+                background: -webkit-linear-gradient(-45deg, #f6f5f4 0%,#f6f5f4 50%,#ffffff 51%,#ffffff 100%);
+                background: -o-linear-gradient(-45deg, #f6f5f4 0%,#f6f5f4 50%,#ffffff 51%,#ffffff 100%);
+                /*background: -ms-linear-gradient(-45deg, #f6f5f4 0%,#f6f5f4 50%,#ffffff 51%,#ffffff 100%);*/
+                background: linear-gradient(135deg, #f6f5f4 0%,#f6f5f4 50%,#ffffff 51%,#ffffff 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f6f5f4', endColorstr='#ffffff',GradientType=1 );
+            }
+
+
+            .VVerde {
+                background: red;
+                background: -moz-linear-gradient(-45deg, red 0%, red 50%, rgba(29, 172, 29, 0.83) 51%, rgba(29, 172, 29, 0.83) 100%);
+                background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,red), color-stop(50%,red), color-stop(51%rgba(29, 172, 29, 0.83)), color-stop(100%,rgba(29, 172, 29, 0.83)));
+                background: -webkit-linear-gradient(-45deg, red 0%,red 50%,rgba(29, 172, 29, 0.83) 51%,rgba(29, 172, 29, 0.83) 100%);
+                background: -o-linear-gradient(-45deg, red 0%,red 50%,rgba(29, 172, 29, 0.83) 51%,rgba(29, 172, 29, 0.83) 100%);
+                /*background: -ms-linear-gradient(-45deg, red 0%,red 50%,#ffffff 51%,#ffffff 100%);*/
+                background: linear-gradient(135deg, red 0%,red 50%,rgba(29, 172, 29, 0.83) 51%,rgba(29, 172, 29, 0.83) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='rgba(29, 172, 29, 0.83)', endColorstr='rgba(29, 172, 29, 0.83)',GradientType=1 );
+                font-weight: 800;
+                color: white;
+            }
+
+            .VAzul {
+                background: red;
+                background: -moz-linear-gradient(-45deg, red 0%, red 50%, rgba(3, 3, 151, 0.81);
+                51%, rgba(3, 3, 151, 0.81) 100%);
+                background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,red), color-stop(50%,red), color-stop(51%,rgba(3, 3, 151, 0.81)), color-stop(100%,rgba(3, 3, 151, 0.81)));
+                background: -webkit-linear-gradient(-45deg, red 0%,red 50%,rgba(3, 3, 151, 0.81) 51%,rgba(3, 3, 151, 0.81) 100%);
+                background: -o-linear-gradient(-45deg, red 0%,red 50%,rgba(3, 3, 151, 0.81) 51%,rgba(3, 3, 151, 0.81) 100%);
+                /*background: -ms-linear-gradient(-45deg, red 0%,red 50%,rgba(3, 3, 151, 0.81) 51%,rgba(3, 3, 151, 0.81) 100%);*/
+                background: linear-gradient(135deg, red 0%,red 50%,rgba(3, 3, 151, 0.81) 51%,rgba(3, 3, 151, 0.81) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='red', endColorstr='rgba(3, 3, 151, 0.81)',GradientType=1 );
+                font-weight: 800;
+                color: white;
+            }
+
+            .VBranco {
+                background: red;
+                background: -moz-linear-gradient(-45deg, red 0%, red 50%, #ffffff 51%, #ffffff 100%);
+                background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,red), color-stop(50%,red), color-stop(51%,#ffffff), color-stop(100%,#ffffff));
+                background: -webkit-linear-gradient(-45deg, red 0%,red 50%,#ffffff 51%,#ffffff 100%);
+                background: -o-linear-gradient(-45deg, red 0%,red 50%,#ffffff 51%,#ffffff 100%);
+                /*background: -ms-linear-gradient(-45deg, red 0%,red 50%,#ffffff 51%,#ffffff 100%);*/
+                background: linear-gradient(135deg, red 0%,red 50%,#ffffff 51%,#ffffff 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='red', endColorstr='#ffffff',GradientType=1 );
+                font-weight: 800;
+            }
+        </style>
+
+        <!--Comando de Voz-->
+
+        <script>
+
+
+
+            var Lote_Quantidade = document.getElementById('Lote_Quantidade')
+            var Pesquisa = document.getElementById('Pesquisa')
+            var txtPosicao = document.getElementById('Posicao_Nome')
+            var Lote_Conferir = document.getElementById('Lote_Conferir')
+            var Armazenar = document.getElementById('Armazenar').addEventListener('click', function (prevent) {
+
+                if (Number(Lote_Conferir.value) == 0 || Lote_Conferir.value == "") {
+                    window.alert("Defina a Quantidade a ser armazenada")
+                    Lote_Conferir.focus();
+                    prevent.preventDefault()
+                    return false
+
+                }
+                if (txtPosicao.value == "") {
+                    window.alert("Defina uma Posição")
+                    prevent.preventDefault()
+                    return false
+                }
+
+            })
+
+
+            function addposicao(posicao) {
+
+                var _ID_Posicao = posicao.id
+                var _Nome_Posicao = posicao.value
+                Pesquisa.href = "/cl_04_Armazem/DetalhesPosicao?_ID_Posicao=" + _ID_Posicao
+                txtPosicao.value = _Nome_Posicao
+
+            }
+
+
+
+            function validarqtd(valor) {
+
+                if (Number(Lote_Quantidade.value) < Number(valor.value)) {
+                    alert("O valor excede a quantidade disponível (" + valor.value + "/" + Lote_Quantidade.value + ")")
+                    valor.value = Lote_Quantidade.value
+                    Armazenar.preventDefault()
+                    return false
+                } else {
+                    Armazenar.style.display = "initial"
+                }
+
+
+            }
+
+
+
+            // comando voz
+            if (window.SpeechRecognition || window.webkitSpeechRecognition) {
+                var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
+                var myRecognition = new SpeechRecognition();
+                var txtPosicao = document.getElementById('Posicao_Nome')
+                myRecognition.lang = 'pt-BR';
+                function Voz() {
+                    try {
+                        myRecognition.start();
+
+                    } catch (erro) {
+                        
+                    }
+                }
+                myRecognition.addEventListener('result', function (evt) {
+
+                    var resultado = evt.results[0][0].transcript;
+                   
+                    var Detalhes;
+                    if (resultado.match(/pesquisar/)) {
+                        resultado = resultado.replace('pesquisar', "");
+                        Detalhes = true;
+                    }
+
+                    resultado = resultado.replace('posição', "");
+                    resultado = resultado.replace(' ', "").replace(' ', "").replace(' ', "").replace(' ', "").replace('e', "").replace('aa', "a").replace(' ', '').replace(' ', '')
+                    resultado = resultado.toUpperCase();
+                    //alert(resultado)
+                    var local = document.getElementsByName(resultado);
+
+                    try {
+                        Pesquisa.href = "/cl_04_Armazem/DetalhesPosicao?_ID_Posicao=" + local[0].id
+                        txtPosicao.value = resultado
+                        if (Detalhes) {
+                            txtPosicao.click();
+                        }
+                        else {
+                            local[0].focus()
+                        }
+
+
+                    } catch (erro) {
+                        txtPosicao.value = 'erro'
+                    }
+
+
+                  
+                }, false)
+
+                myRecognition.addEventListener('erro', function (evt) {
+                    resultado.innerHTML = 'Não ouvi muito bem';
+                }, false)
+
+            } else {
+                resultado.innerHTML = 'Seu não vegador não suporta está tecnologia'
+            }
+
+
+
+        </script>
+

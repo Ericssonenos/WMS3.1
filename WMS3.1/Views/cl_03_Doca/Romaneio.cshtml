@@ -1,0 +1,68 @@
+﻿@model IEnumerable<WMS3._1.Models.cl_01_Romaneio>
+
+@{
+    ViewBag.Title = "Romaneios Pendentes para Conferir";
+}
+
+<h2>Romaneio</h2>
+
+
+<table class="table">
+    <tr>
+
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Placa)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Motorista)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qtd_NF)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qtd_Produtos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Qtd_Lotes)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Total)
+        </th>
+
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+
+        <td>
+            @Html.ActionLink(item.Nome, "NFs_P_Conferir", new { ID_Romaneio = item.ID })
+
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Placa)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Motorista)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Qtd_NF)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Qtd_Produtos)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Qtd_Lotes)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Total)
+        </td>
+
+        
+    </tr>
+}
+
+</table>

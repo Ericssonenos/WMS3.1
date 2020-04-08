@@ -1,0 +1,181 @@
+﻿@model WMS3._1.Models.cl_0511_Armazem
+@{
+    ViewBag.Title = "DetalhesPosicao";
+}
+@{
+    double TQuantidade;
+    TQuantidade = 0;
+    double SQuantidade;
+    SQuantidade = 0;
+
+
+    //cl_03_Lote lote = new cl_03_Lote();
+}
+<h2 style="text-align:center"> Posição: @Model.Posicao.Nome</h2>
+<hr />
+
+<!--Informações do Produto Produtos-->
+<div class="row container-fluid center-block">
+    <table class="Tabela" id="novo">
+        <!--Cabecalho-->
+        <tr>
+
+            <th style="width: 130px"> Código   </th>
+            <th> Descrição Produto   </th>
+            <th style="text-align:center;width:80px"> Lote   </th>
+            <th style="text-align:center; width:90px"> Validade   </th>
+            <th style="text-align:center;width:80px"> Unidade   </th>
+            <th style="text-align:center; width:74px"> Quantidade   </th>
+            <th>
+                @Html.DropDownList("Modulos", new List<SelectListItem>
+                    {
+                        new SelectListItem { Text= "Modulo A",Value="A"},
+                        new SelectListItem { Text= "Modulo B",Value="B"},
+                        new SelectListItem { Text= "Modulo C",Value="C"},
+                        new SelectListItem { Text= "Modulo D",Value="D"}
+                    },  new { @style = "border-style:none", @id = "lista" })
+            </th>
+        </tr>
+
+
+        <!--Conteúdo-->
+        @for (int x = 0; x < Model.Lotes.Count; x++)
+        {
+            SQuantidade = 0;
+            SQuantidade += Model.Lotes[x].Produto.Quantidade;
+            TQuantidade += Model.Lotes[x].Produto.Quantidade;
+
+
+            <tr>
+
+                <td>
+                    @Html.ActionLink(Model.Lotes[x].Produto.CodigoI, "Detalhes", "cl_06_Produto", new { _ID_Produto = Model.Lotes[x].Produto.ID }, null)
+                </td>
+                <td style="">
+                    @Html.TextBoxFor(Model => Model.Lotes[x].Produto.NomeI,
+                   new { @class = "form-control", @readonly = "readonly", @style = "font-size: 11px" })
+                </td>
+                <td style="border-style:none">
+                    @Html.TextBoxFor(Model => Model.Lotes[x].Nome,
+                   new { @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td style="border-style:none">
+                    @Html.TextBoxFor(Model => Model.Lotes[x].Validade,
+                   new { @style = "text-align:center;", @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td style="border-style:none">
+                    @Html.TextBoxFor(Model => Model.Lotes[x].Produto.Unidade_Medida,
+                   new { @style = "text-align:center;", @class = "form-control", @readonly = "readonly" })
+                </td>
+                <td style="border-style:none">
+                    @Html.TextBoxFor(Model => Model.Lotes[x].Quantidade,
+                new { @style = "text-align:center;", @class = "form-control", @readonly = "readonly" })
+                </td>
+                @Html.HiddenFor(Model => Model.Lotes[x].Conferir)
+
+
+                <td style="width:60px">
+
+                    <a class="lotes"
+                       id="@Model.Lotes[x].ID"
+                       name="@Model.Posicao.ID"
+                       href="/cl_04_Armazem/Armazem?_Modulo=@Model.Posicao.Modulo&_ID_Lote=@Model.Lotes[x].ID&_ID_Origem=@Model.Posicao.ID">Transferência</a>
+
+
+                </td>
+
+
+
+
+                @Html.HiddenFor(Model => Model.Lotes[x].Status)
+                @Html.HiddenFor(Model => Model.Lotes[x].ID)
+                @Html.HiddenFor(Model => Model.Lotes[x].Status)
+
+            </tr>
+
+            TQuantidade += Model.Lotes[x].Quantidade;
+        }
+        <tfoot>
+            <tr>
+                <td style="border-style:none"></td>
+                <td style="border-style:none"></td>
+                <td style="border-style:none"></td>
+                <td style="text-align:center;border-style:none"> Total</td>
+
+                @*<td style="text-align:center" class="form-control">@TQuantidade.ToString()</td>*@
+
+            </tr>
+        </tfoot>
+    </table>
+</div>
+<button class="col-md-6 btn btn-info" onclick="history.go(-1);">Voltar</button>
+<td style="width:60px">
+
+    <a class="lotes"
+       href="/cl_04_Armazem/BloquearPosicao?_ID_Posicao="@Model.Posicao.ID>Bloquear/Desbloquear
+    </a>
+
+
+</td>
+<script>
+   // Definir destino do armazem
+    lista.addEventListener('change', function () {
+        var select = document.querySelector('select');
+        var modulo = document.getElementsByClassName('lotes');
+        var option = select.children[select.selectedIndex];
+        var texto = option.textContent;
+        for (var i = 0; i < modulo.length; ++i) {
+            var id_Lote = modulo[i].id
+            var id_Posicao = modulo[i].name
+            modulo[i].href = "/cl_04_Armazem/Armazem?" +
+                "_Modulo=" + texto.substr(-1, 1) +
+                "&_ID_Lote=" + id_Lote +
+                "&_ID_Origem=" + id_Posicao;
+        }
+    })
+</script>
+
+
+<!--CSS da tabela-->
+<style>
+
+
+    .Tabela {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    .td {
+        border-style: none
+    }
+
+    .Tabela td, .Tabela th, .Tabela td input {
+        border: 1px solid #ddd;
+        padding: 1px;
+    }
+
+    .Tabela tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
+    .Tabela tr:hover, .Tabela input:hover {
+        background-color: #ddd;
+    }
+
+
+    .Tabela th, .Tabela th select {
+        padding-top: 6px;
+        padding-bottom: 5px;
+        text-align: center;
+        background-color: black;
+        color: white;
+    }
+
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+        font-weight: bolder;
+    }
+</style>

@@ -1,0 +1,683 @@
+﻿@model WMS3._1.Models.Serializar.NFeProca_pasta.cl_NFe.cl_InfNFe
+@using WMS3._1.Models
+@using Microsoft.AspNet.Identity
+@using WMS3._1.Models.Serializar.NFeProca_pasta.NFe_pasta.Detalhes_pasta.Rastro_pasta;
+
+@{
+    ViewBag.Title = "Upload";
+    DateTime Hoje = DateTime.Today;
+}
+
+    <head>
+        <meta http-equiv="content-language" content="pt-br" />
+        
+    </head>
+
+
+<!--Titulo-->
+<h4>Upload de XML</h4>
+<!----------------------------------------------------------------------------------------------->
+<!--Botões para escolher o XML-->
+@using (Html.BeginForm("Upload", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "Arq" }))
+{
+<div col-md-12 > <hr /></div> 
+    <div class="  col-md-6 container center-block">
+        
+        @*Botão Trazer as informações do XML*@
+        <input class="col-md-4 text-center btn btn-primary" type="submit" name="submit" value="Visualizar" id="Visualisar" style="display:none" />
+        @*Botão para escolher o XML*@
+        <input class="col-md-4 text-center " type="file" id=" Xml" name="Xml" onclick="Limpar()" onchange="document.getElementById('Visualisar').click()" />
+
+    </div>
+}
+<!----------------------------------------------------------------------------------------------->
+<!--Preencher as inforçções do XML-->
+@if (Model.Chave != string.Empty)
+{
+    <div class="col-md-12" id="Corpo">
+        @using (Html.BeginForm("Cadastrar", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "nFe" }))
+        {
+            double TQuantidade;
+            TQuantidade = 0;
+            double SQuantidade;
+            SQuantidade = 0;
+            string IdSoma = "";
+            string Idconferir = "";
+      
+            <!--Informações da NF---------------------------------------------------------------------------------->
+            <div>
+                <!--Primeira Linha-->
+                <div class="row" id="PrimeiraLinha">
+                    <!--NF-->
+                    <div class="col-md-2">
+                        <p><strong> NF</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Identificacao.Numero,
+                            new { @class = "form-control", @readonly = "readonly", @style = "width:110px" })
+                        </p>
+                    </div>
+                    <!--Serie-->
+                    <div class="col-md-1 ">
+                        <p><strong>Série</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Identificacao.serie,
+                            new { @class = "form-control ", @readonly = "readonly", @style = "width:50px" })
+                        </p>
+                    </div>
+                    <!--Chave de Acesso-->
+                    <div class="col-md-offset-1 col-md-5 ">
+                        <p><strong>Chave de Acesso</strong></p>
+                        @Html.TextBoxFor(Model => Model.Chave, new { @class = "form-control ", @readonly = "readonly" })
+                    </div>
+                    <!--Pedido-->
+                    <div class="col-md-3">
+                        @if (Model.Compra == null || @ViewBag.Validar == "validar")
+                        {
+                            <p><strong>Pedido</strong></p>
+                            <p>
+                                @Html.TextBoxFor(Model => Model.Compra.Pedido,
+                                new { @class = "form-control", @style = "width:105px;" })
+                            </p>
+                        }
+                        else
+                        {
+                            <p><strong>Pedido</strong></p>
+                            <p>
+                                @Html.TextBoxFor(Model => Model.Compra.Pedido,
+                                new { @class = "form-control ", @readonly = "readonly", @style = "width:105px;" })
+
+                            </p>
+                        }
+                        @Html.ValidationMessageFor(model => model.Compra.Pedido, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <!-- Segunda Linha-->
+                <div class="row">
+
+                    <!--Naureza de Operação-->
+                    <div class="col-md-6 ">
+                        <p><strong>Natureza da Operação</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Identificacao.Natureza_Operacao,
+                            new { @class = "form-control ", @readonly = "readonly", @style = "width:480px" })
+                        </p>
+                    </div>
+
+
+                    <!--Emissão-->
+                    <div class="col-md-3" lang="pt-br">
+                        <p><strong>Emissão NF</strong></p>
+                        <p>
+                            <input class="form-control"
+                                   id="Identificacao_Emisao"
+                                   name="Identificacao.Emisao"
+                                   readonly="readonly"
+                                   style="width:180px"
+                                   type="text"
+                                   lang="pt-br"
+                                   value=@Model.Identificacao.Emisao.ToString("dd-MMM-yy HH:mm")>
+                        </p>
+                        @Html.ValidationMessageFor(Model => Model.Identificacao.Emisao, "", new { @class = "text-danger"})
+                       
+                    </div>
+
+                    <!--Previsão de entrega-->
+                    <div class="col-md-3">
+                        <p><strong>Previsão de Entrega</strong></p>
+                        <p style="font-size:11px">
+                            @Html.TextBoxFor(Model => Model.Identificacao.Previsao,
+                            Hoje.ToString(),
+                            new { @class = "form-control ", @style = "width:205px;", @type = "date" })
+                        </p>
+                        @Html.ValidationMessageFor(Model => Model.Identificacao.Previsao, "", new { @class = "text-danger" })
+                    </div>
+
+
+                </div>
+
+                <!-- Emitente-->
+                <div class=" row ">
+                    <!--Código-->
+                    <div class="col-md-2 col-sm-6">
+                        <p><strong>Codigo</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Emitente.Codigo,
+                            new { @class = "form-control ", @readonly = "readonly" })
+                        </p>
+                    </div>
+                    <!--CNPJ-->
+                    <div class="col-md-2 col-sm-6">
+                        <p><strong>CNPJ</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Emitente.CNPJ,
+                            new { @class = "form-control ", @readonly = "readonly" })
+                        </p>
+                    </div>
+                    <!--Nome-->
+                    <div class="col-md-8 col-sm-6">
+                        <p><strong>Emitente</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Emitente.xNome,
+                            new { @class = "form-control ", @readonly = "readonly" })
+                        </p>
+                    </div>
+                    <!--Oculto-->
+                    @Html.HiddenFor(Model => Model.Emitente.ID)
+                    @Html.HiddenFor(Model => Model.Emitente.Endereco.xLgr)
+                    @Html.HiddenFor(Model => Model.Emitente.Endereco.cMun)
+                    @Html.HiddenFor(Model => Model.Emitente.Endereco.xMun)
+                    @Html.HiddenFor(Model => Model.Emitente.Endereco.CEP)
+                    @Html.HiddenFor(Model => Model.Emitente.Endereco.cPais)
+                    @Html.HiddenFor(Model => Model.Emitente.Endereco.xPais)
+                    @Html.HiddenFor(Model => Model.Emitente.Endereco.fone)
+                    @Html.HiddenFor(Model => Model.Emitente.Endereco.UF)
+
+                </div>
+                <!--Destinatário-->
+                <div class="row  ">
+                    <!--Código-->
+                    <div class="col-md-2 col-sm-6">
+                        <p><strong>Codigo</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Destinatario.Codigo,
+                            new { @class = "form-control ", @readonly = "readonly" })
+                        </p>
+                    </div>
+                    <!--CNPJ-->
+                    <div class="col-md-2 col-sm-6">
+                        <p><strong>CNPJ/CPF</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Destinatario.CNPJ_CPF,
+                            new { @class = "form-control ", @readonly = "readonly" })
+                        </p>
+                    </div>
+                    <!--Nome-->
+                    <div class="col-md-8 col-sm-6">
+                        <p><strong>Destinatário</strong></p>
+                        <p>
+                            @Html.TextBoxFor(Model => Model.Destinatario.xNome,
+                            new { @class = "form-control ", @readonly = "readonly" })
+                        </p>
+                    </div>
+                    <!--Oculto-->
+                    @Html.HiddenFor(Model => Model.Destinatario.ID)
+                    @Html.HiddenFor(Model => Model.Destinatario.Endereco.xLgr)
+                    @Html.HiddenFor(Model => Model.Destinatario.Endereco.cMun)
+                    @Html.HiddenFor(Model => Model.Destinatario.Endereco.xMun)
+                    @Html.HiddenFor(Model => Model.Destinatario.Endereco.CEP)
+                    @Html.HiddenFor(Model => Model.Destinatario.Endereco.cPais)
+                    @Html.HiddenFor(Model => Model.Destinatario.Endereco.xPais)
+                    @Html.HiddenFor(Model => Model.Destinatario.Endereco.fone)
+                    @Html.HiddenFor(Model => Model.Destinatario.Endereco.UF)
+                </div>
+                <hr />
+            </div>
+
+            <!------------------------------------------------------------------------------------------------------->
+
+            <!--Informações do Produto Produtos-->
+            <div class="row container-fluid center-block">
+                <table class="Tabela" id="novo">
+
+                    <!--Cabecalho-->
+                    <thead>
+                        <tr>
+                            <th style="width:105px"> C.Interno   </th>
+                            <th style="width: 140px"> C.Externo  </th>
+                            <th> Descrição Produto   </th>
+                            <th style="width:80px"> Unidade   </th>
+                            <th style="text-align:center; width:74px"> Quantidade   </th>
+
+                            <th style="width: 110px"> Lote   </th>
+                            <th style="width: 120px"> Validade   </th>
+                            <th style="width: 120px">Fabricação</th>
+
+
+
+                        </tr>
+                    </thead>
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <tbody>
+                    @for (int x = 0; x < Model.Detalhes.Count; x++)
+                    {
+                        SQuantidade = 0;
+                        <!--Não haver Informações sobre a nota ou não haver rastros (lote, validade...)-->
+
+                        if (Model.Detalhes[x].Produto.rastro.Count == 0)
+                        {
+                            SQuantidade += Model.Detalhes[x].Produto.Quantidade;
+                            TQuantidade += Model.Detalhes[x].Produto.Quantidade;
+                            IdSoma = "Total" + x;
+                            Idconferir = "Conferir" + x;
+                            Model.Detalhes[x].Produto.Conferir = Model.Detalhes[x].Produto.Quantidade;
+                            cl_Rastro rastro = new cl_Rastro();
+
+                            rastro.Lote = "";
+                            rastro.Quantidade = Model.Detalhes[x].Produto.Quantidade;
+                            Model.Detalhes[x].Produto.rastro.Add(rastro);
+
+                            <!--VAlidadores-->
+                            <tr>
+                                <td>
+                                    @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.ID, "", new { @class = "text-danger" })
+                                </td>
+                                <td></td>
+                                <td>@Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.Quantidade, "", new { @class = "text-danger" })</td>
+                                <td></td>
+                                <td>
+                                    @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.rastro[0].Quantidade, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.rastro[0].Lote, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.rastro[0].Validade, "", new { @class = "text-danger" })
+                                </td>
+                                <td>
+                                    @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.rastro[0].Fabricacao, "", new { @class = "text-danger" })
+                                </td>
+                            </tr>
+                            <!-------------------->
+                            <tr id="@x">
+                                @if (Model.Detalhes[x].Produto.ID == 0)
+                                {
+                                    <td>
+                                        @Html.DropDownListFor(Model => Model.Detalhes[x].Produto.ID, (SelectList)ViewBag.IDS, null,
+                                       new { @class = "form-control ", @readonly = "readonly" })
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.CodigoI, new { @class = "form-control ", @readonly = "readonly", @style = "font-size: 11px" })</td>
+                                }
+
+                                <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.CodigoF, new { @class = "form-control", @readonly = "readonly", @style = "font-size: 11px" })</td>
+                                <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.NomeF, new { @class = "form-control", @readonly = "readonly", @style = "font-size: 11px" })</td>
+                                <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.Unidade_Medida, new { @class = "form-control", @readonly = "readonly" })</td>
+                                <td name="Soma @x">@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[0].Quantidade, new { @class = "form-control", @readonly = "readonly", @onchange = "Validarcampos(" + @x + ")" })</td>
+                                @Html.HiddenFor(Model => Model.Detalhes[x].Produto.Quantidade, new { @id = @IdSoma })
+                                @Html.HiddenFor(Model => Model.Detalhes[x].Produto.Conferir, new { @id = @Idconferir })
+
+                                <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[0].Lote, new { @class = "form-control", @style = "font-size: 11px" })</td>
+                                <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[0].Validade, Hoje.ToString(), new { @class = "form-control ", @type = "date" })</td>
+                                <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[0].Fabricacao, Hoje.ToString(), new { @class = "form-control ", @type = "date" }) </td>
+                                @Html.HiddenFor(Model => Model.Detalhes[x].Produto.Valor)
+                                @Html.HiddenFor(Model => Model.Detalhes[x].Produto.ID)
+                                @*<td style="font-size:30px; width:30px;font-weight:bolder">  <input type="button" onclick="NovoLote(@x);" value="+" />   </td>*@
+                            </tr>
+
+
+
+                        }
+                        else
+                        {
+
+                            for (int y = 0; y < Model.Detalhes[x].Produto.rastro.Count; y++)
+                            {
+                                SQuantidade += Model.Detalhes[x].Produto.rastro[y].Quantidade;
+                                TQuantidade += Model.Detalhes[x].Produto.rastro[y].Quantidade;
+                                IdSoma = "Total" + x;
+                                Idconferir = "Conferir" + x;
+                                Model.Detalhes[x].Produto.Conferir = Model.Detalhes[x].Produto.Quantidade;
+                                <!--Validadores-->
+                                <tr>
+                                    <td>
+                                        @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.ID, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>@Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.Quantidade, "", new { @class = "text-danger" })</td>
+                                    <td></td>
+                                    <td>
+                                        @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.rastro[y].Quantidade, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                        @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.rastro[y].Lote, "", new { @class = "text-danger", @style = "font-size: 11px" })
+                                    </td>
+                                    <td>
+                                        @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.rastro[y].Validade, "", new { @class = "text-danger" })
+                                    </td>
+                                    <td>
+                                        @Html.ValidationMessageFor(Model => Model.Detalhes[x].Produto.rastro[y].Fabricacao, "", new { @class = "text-danger" })
+                                    </td>
+                                </tr>
+                                <!---------------->
+                                <tr>
+                                    @if (y == 0)
+                                    {
+                                        if (Model.Detalhes[x].Produto.ID == 0)
+                                        {
+                                            <td>
+                                                @Html.DropDownListFor(Model => Model.Detalhes[x].Produto.ID, (SelectList)ViewBag.IDS, "0",
+                                                            new { @class = "form-control ", @style = "font-size: 11px" })
+                                            </td>
+                                        }
+                                        else
+                                        {
+                                            <td>
+                                                @Html.TextBoxFor(Model => Model.Detalhes[x].Produto.CodigoI,
+                                            new { @class = "form-control ", @readonly = "readonly", @style = "font-size: 11px" })
+                                            </td>
+                                        }
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.CodigoF, new { @class = "form-control", @readonly = "readonly", @style = "font-size: 11px" })</td>
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.NomeF,   new { @class = "form-control", @readonly = "readonly", @style = "font-size: 11px" })</td>
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.Unidade_Medida, new { @class = "form-control", @readonly = "readonly" })</td>
+                                        @Html.HiddenFor(Model => Model.Detalhes[x].Produto.Valor)
+                                        @Html.HiddenFor(Model => Model.Detalhes[x].Produto.ID)
+
+
+
+                                    }
+                                    else
+                                    {
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-danger"></td>
+                                        <td> </td>
+                                    }
+
+
+                                    @Html.HiddenFor(Model => Model.Detalhes[x].Produto.Quantidade, new { @id = @IdSoma })
+                                    @Html.HiddenFor(Model => Model.Detalhes[x].Produto.Conferir, new { @id = @Idconferir })
+
+                                    @if (@ViewBag.Validar == "validar")
+                                    {
+
+                                        <td name="Soma @x">@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[y].Quantidade, new { @class = "form-control", @onchange = "Validarcampos(" + @x + ")" })</td>
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[y].Lote, new { @class = "form-control", @style = "font-size: 11px" })</td>
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[y].Validade, new { @class = "form-control", @type = "date" })</td>
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[y].Fabricacao, new { @class = "form-control ", @type = "date" }) </td>
+
+                                        if (y == 1)
+                                        {
+                                            <td class="' + IL[IDPA] + '" id="Add' + IDPA + IL[IDPA] + '" style="font-size:20px; width:35px;font-weight:bolder"> <input style=" width:30px" type="button" onclick="removerLote(this);" value="-" />   </td>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[y].Quantidade, new { @class = "form-control", @readonly = "readonly" })</td>
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[y].Lote, new { @class = "form-control", @readonly = "readonly", @style = "font-size: 11px" })</td>
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[y].Validade, Model.Detalhes[x].Produto.rastro[y].Validade.ToString("dd/MM/yyyy"), new { @class = "form-control", @readonly = "readonly" })</td>
+                                        <td>@Html.TextBoxFor(Model => Model.Detalhes[x].Produto.rastro[y].Fabricacao, Model.Detalhes[x].Produto.rastro[y].Fabricacao.ToString("dd/MM/yyyy"), new { @class = "form-control ", @readonly = "readonly" }) </td>
+
+                                    }
+
+                                </tr>
+
+                            }
+
+                        }
+
+                    }
+
+                </tbody>
+                    <!--Conteúdo-->
+
+
+
+                </table>
+            </div>
+            <br />
+            <div class="row ">
+
+                <div class="col-md-6" style="color:red;font-weight:bolder;text-align:center">
+                    <input class="col-md-6 btn btn-info" type="submit" name="submit" value="Enviar arquivo" id="Enviarbtn" onclick="ValidarEnvio(this)" />
+                </div>
+                <div class="col-md-6" style="color:red;font-weight:bolder;text-align:center">
+                    @ViewBag.Error
+                </div>
+                
+                <br />
+
+            </div>
+
+        }
+    </div>
+
+}
+else
+{
+<div style="color:green;font-weight:800">
+    @ViewBag.Error
+   
+    <br />
+</div>
+}
+
+
+
+
+<!--Script para adicionar Lotes e removelos-->
+<script>
+
+
+
+            let Tabela = document.querySelector("#novo")
+    let P = Number(-1) /* Índice do Produto  */
+    let IL = []  // Índice do Lote
+    let d = String('@Hoje.ToString()')
+    let btnEnviar = document.getElementById('Enviarbtn')
+
+
+
+
+    // IDPA => ID do Produto Atual Obs: que referese a índice da classe da coleção do produto
+    function NovoLote(IDPA) {
+        // ILPP => Índece da linha do próximo produto
+        // = índice do produto atual mais um
+        var ILPP = Number(document.getElementById(IDPA).rowIndex) + 1
+        // Linha = A linha(tr) que será adicionada
+         let Linhavalicao = Tabela.insertRow(ILPP)
+        let Linha =  Tabela.insertRow(ILPP+1)
+        // Atribuir o ID do Produto Atual na class <=> class = "IDPA"
+        Linha.className = IDPA
+        // Campo do input  da quantidade do produto atual
+        let Qtd = document.getElementById('Detalhes_' + IDPA + '__Produto_rastro_0__Quantidade')
+        // Retirar o somente leitura do campo (...)
+        Qtd.readOnly = false
+
+
+         //Se o for o priméiro acrescento de lote, IL[IDP] = 0, pois o primeiro lote já foi acrescentado junto ao produto
+         //Índice de Lote
+        if (IL[IDPA] == null)
+        {
+            IL[IDPA] = Number(0)
+        }
+
+            // Índice de Lotes
+            IL[IDPA] = IL[IDPA] + 1
+        try {
+            let BA = Number(IL[IDPA]) - 1
+            let IBA = 'Add' + IDPA + BA
+            document.getElementById(IBA).innerHTML = '  <td></td>'
+        } catch{ }
+
+        //Validações
+        Linhavalicao.innerHTML += ' <td></td>'
+        Linhavalicao.innerHTML += ' <td></td> '
+        Linhavalicao.innerHTML += ' <td class = "text-danger" ></td> '
+        Linhavalicao.innerHTML += ' <td></td>'
+
+
+
+        // Informções do Lote
+        Linha.innerHTML += ' <td></td>'   // Código I
+        Linha.innerHTML += ' <td></td> '  // Código F
+        Linha.innerHTML += ' <td></td> '  // Descrição do Produto
+        Linha.innerHTML += ' <td></td>'   // Unidade de Medida
+        // Quantidade
+        Linha.innerHTML += '<td name="Soma '+IDPA+'"><input class="form-control"  data-val-number="O campo Quantidade deve ser um número." data-val-required="Preencha o campo de quantidade"   '
+            + ' id = "Detalhes_' + IDPA + '__Produto_rastro_' + IL[IDPA] + '__Quantidade" name="Detalhes[' + IDPA + '].Produto.rastro[' + IL[IDPA] + '].Quantidade"'
+            + ' type = "text" value = "1"   onchange="Validarcampos(' + IDPA + ')"  ></td > '//onchang para chamar funçao JS
+        
+        //---------------
+        // Lote
+        Linha.innerHTML += '<td><input class="form-control" data-val="true" data-val-required="Preencha o campo de Loite"'
+            + ' id="Detalhes_' + IDPA + '__Produto_rastro_' + IL[IDPA] + '__Lote" name="Detalhes[' + IDPA + '].Produto.rastro[' + IL[IDPA] + '].Lote" '
+            + 'type="text" value=""> </td>'
+         //---------------
+        //Validade
+        Linha.innerHTML += '<td><input class="form-control" data-val="true"  type ="date" data-val-date="O campo Date deve ser uma data." data-val-required="O campo Date é obrigatório." '
+            + 'id = "Detalhes_' + IDPA + '__Produto_rastro_' + IL[IDPA] + '__Validade" name="Detalhes[' + IDPA + '].Produto.rastro[' + IL[IDPA] + '].Validade '
+            + 'type = "text" value = ' + d + '" ></td > '
+        //---------------
+        //Fabricacao
+            Linha.innerHTML += '<td><input class="form-control" type ="date" data-val="true" data-val-date="O campo Date deve ser uma data." data-val-required="O campo Date é obrigatório." '
+                + 'id = "Detalhes_' + IDPA + '__Produto_rastro_' + IL[IDPA] + '__Fabricacao" name="Detalhes[' + IDPA + '].Produto.rastro[' + IL[IDPA] + '].Fabricacao" '
+                + ' type = "text" value = "' + d + '" ></td > '
+        //---------------
+        //botão de excluir Lote
+        Linha.innerHTML += ' <td class = "' + IL[IDPA] + '" id ="Add' + IDPA + IL[IDPA] + '"  style="font-size:20px; width:35px;font-weight:bolder"> '
+            + ' <input style=" width:30px" type="button"  onclick="removerLote(this);"   value="-" />   </td>'
+        //---------------
+
+
+    }
+
+    function removerLote(elemento) {
+        elemento.innerHTML
+        var indice = elemento.parentElement.parentElement.rowIndex
+        var alerta = Number(indice)-2
+        //$(elemento).closest('tr').remove();
+
+        console.log(Tabela.children[1].children[alerta].innerHTML)
+        Tabela.children[1].children[alerta].remove();
+        console.log(Tabela.children[1].children[alerta].innerHTML)
+        Tabela.children[1].children[alerta].remove();
+
+        let tr = elemento.closest('tr').className
+
+        IL[tr] = IL[tr] - 1
+
+        try {
+
+            let td = Number(elemento.closest('td').className ) -1
+
+            let IBA = 'Add' + tr + td
+
+            document.getElementById(IBA).innerHTML = ' <td class = "' + td + '" id ="Add' + tr + td + '"  style="font-size:20px; width:35px;font-weight:bolder">  <input style=" width:30px" type="button"  onclick="removerLote(this);"  value="-" />   </td>'
+
+
+
+        } catch{
+
+
+        }
+
+
+
+
+    };
+
+    function removermaradores() {
+         $('input').each(function(e,inp) {
+                    if ($(inp).is(':checked')) {
+                        $(inp).parent().parent().remove()
+                        let clases = inp.className
+                        let lotes = document.getElementsByClassName(clases)
+
+                        while (lotes.length > 0) {
+
+                             lotes[0].remove()
+                        }
+                    }
+        });
+    }
+
+    function Limpar() {
+        $('#Corpo').html("");
+    }
+
+    function Validarcampos(Elemento) {
+
+
+        var total = document.getElementById("Total" + Elemento).value
+        var conferir = document.getElementById("Conferir" + Elemento)
+        var lotes = document.getElementsByName("Soma " + Elemento)
+        var linha = lotes[Number(Elemento + 1)].parentElement
+
+        var mensagem = linha.children[2]
+        mensagem.className = "text-danger text-right";
+
+        var valor
+        var Soma =0
+        for (var x = 0; x < lotes.length; x++) {
+            valor =  lotes[x].children[0].value
+            Soma = Number(valor) + Number(Soma);
+           
+            
+            if (Number(valor) == 0) { } else {lotes[x].children[0].value =null}
+            
+
+            if (valor > Number(total)) {
+                mensagem.innerHTML = "Valor digitado(" + valor + ") Exede o valor do Lote: " + total;
+                lotes[x].children[0].value = "";
+            } else if (Soma > Number(total)) {
+                var excesso = Soma - Number(total)
+                if (Number(lotes[0].children[0].value) - excesso > 0) {
+                    lotes[0].children[0].value = Number(lotes[0].children[0].value) - excesso
+                    mensagem.innerHTML = ""
+                } else {
+                    lotes[x].children[0].value = "";
+                    mensagem.innerHTML = "Valor digitado(" + valor + ") Exede o valor do Lote: " + total;
+                }
+            }
+            else
+            {
+                 mensagem.innerHTML = ""
+            }
+
+        }
+         conferir.value = Soma
+    }
+
+  
+
+  
+
+
+</script>
+
+<!--CSS da tabela-->
+<style>
+
+
+    .Tabela {
+        font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+        .Tabela td, .Tabela th {
+            border: 1px solid #ddd;
+            padding: 1px;
+        }
+
+        .Tabela tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .Tabela tr:hover {
+            background-color: #ddd;
+        }
+
+        .Tabela th {
+            padding-top: 6px;
+            padding-bottom: 5px;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+    tfoot {
+        display: table-footer-group;
+        vertical-align: middle;
+        border-color: inherit;
+        font-weight: bolder;
+    }
+</style>
+
+
